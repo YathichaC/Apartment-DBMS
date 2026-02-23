@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บ้านกฤติญา</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      * {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+</head>
+<body>
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a href="#" class="flex items-center gap-2">
+            <span class="text-xl font-semibold text-gray-900">บ้านกฤติญา</span>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="#" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
+            <a href="#rooms" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
+            <a href="#contact" class="transition-colors" style="color: #2E7D32;">ติดต่อ</a>
+            <a href="#" class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">เข้าสู่ระบบ</a>
+          </nav>
+
+          <button id="menuBtn" class="md:hidden p-2">
+            <span class="text-2xl">☰</span>
+          </button>
+        </div>
+
+        <nav id="mobileMenu" class="md:hidden py-4 border-t border-gray-200 hidden">
+          <div class="flex flex-col gap-4">
+            <a href="#" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
+            <a href="#rooms" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
+            <a href="#contact" class="transition-colors" style="color: #2E7D32;">ติดต่อ</a>
+            <a href="#" class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition w-full text-center">เข้าสู่ระบบ</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="relative flex items-center justify-center" style="height: 600px; background-image: linear-gradient(rgba(46, 125, 50, 0.7), rgba(46, 125, 50, 0.7)), url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600'); background-size: cover; background-position: center;">
+        <article class="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+          <h1 class="text-2xl md:text-4xl mb-4">ยินดีต้อนรับสู่ระบบจองห้องพักบ้านกฤติญา</h1>
+          <p class="text-lg md:text-lg mb-8 opacity-90">
+            ขอบคุณที่เลือกเราเป็นส่วนหนึ่งของการเริ่มต้นใหม่ของคุณ
+          </p>
+          <a href="#rooms" class="inline-block bg-white text-green-700 hover:bg-gray-100 text-lg px-8 py-6 rounded-lg font-semibold transition">
+            ค้นหาห้องว่าง
+          </a>
+        </article>
+    </main>
+
+    <section id="rooms" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <header class="text-center mb-12">
+            <h2 class="text-xl md:text-2xl mb-4">ห้องว่างพร้อมเช่า</h2>
+            <p class="text-gray-600 text-lg">
+                สำรวจห้องว่างที่พร้อมเช่าอยู่
+            </p>
+        </header>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <article class="bg-white rounded-xl shadow-md overflow-hidden">
+                <figure class="m-0">
+                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" alt="Room 1" class="w-full h-48 object-cover">
+                </figure>
+                <div class="p-4">
+                    <h3 class="text-xl font-bold mb-2">ห้อง A1</h3>
+                    <p class="text-green-700 font-bold">฿3,000/เดือน</p>
+                </div>
+            </article>
+            <article class="bg-white rounded-xl shadow-md overflow-hidden">
+                <figure class="m-0">
+                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" alt="Room 2" class="w-full h-48 object-cover">
+                </figure>
+                <div class="p-4">
+                    <h3 class="text-xl font-bold mb-2">ห้อง B2</h3>
+                    <p class="text-green-700 font-bold">฿3,000/เดือน</p>
+                </div>
+            </article>
+            <article class="bg-white rounded-xl shadow-md overflow-hidden">
+                <figure class="m-0">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400" alt="Room 3" class="w-full h-48 object-cover">
+                </figure>
+                <div class="p-4">
+                    <h3 class="text-xl font-bold mb-2">ห้อง A5</h3>
+                    <p class="text-green-700 font-bold">฿3,200/เดือน</p>
+                </div>
+            </article>
+        </div>
+        <footer class="text-center">
+          <a href="#rooms" class="inline-block bg-green-700 text-white hover:bg-green-800 text-lg px-8 py-3 rounded-lg font-semibold transition">
+            ดูห้องทั้งหมด
+          </a>
+        </footer>
+      </section>
+
+      <section class="bg-gray-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <header class="text-center mb-12">
+            <h2 class="text-xl md:text-2xl mb-4">แผนผังที่ตั้งหอพัก</h2>
+          </header>
+        </div>
+    </section>
+</body>
+</html>
