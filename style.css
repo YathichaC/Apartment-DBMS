@@ -1,0 +1,1101 @@
+.apartment-booking {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: flex-start;
+  position: relative;
+  background-color: #ffffff;
+}
+
+.apartment-booking .jre {
+  display: flex;
+  width: 1536px;
+  align-items: flex-start;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+  background-color: #f5f5f5;
+  overflow: hidden;
+}
+
+.apartment-booking .s {
+  display: flex;
+  flex-direction: column;
+  width: 256px;
+  height: 646.4px;
+  align-items: flex-start;
+  padding: 0px 0px -1.53e-05px;
+  position: relative;
+  margin-bottom: -0.40px;
+  background-color: #ffffff;
+  border-right-width: 0.8px;
+  border-right-style: solid;
+  border-color: #0000001a;
+}
+
+.apartment-booking .container {
+  display: flex;
+  flex-direction: column;
+  width: 255.2px;
+  height: 88.8px;
+  align-items: flex-start;
+  padding: 24px 24px 0.8px;
+  position: relative;
+  border-bottom-width: 0.8px;
+  border-bottom-style: solid;
+  border-color: #0000001a;
+}
+
+.apartment-booking .div {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.apartment-booking .icon-wrapper {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #2e7d32;
+  border-radius: 12px;
+}
+
+.apartment-booking .icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.apartment-booking .vector {
+  position: absolute;
+  width: 66.67%;
+  height: 54.17%;
+  top: 45.83%;
+  left: 33.33%;
+}
+
+.apartment-booking .img {
+  position: absolute;
+  width: 91.67%;
+  height: 95.83%;
+  top: 4.17%;
+  left: 8.33%;
+}
+
+.apartment-booking .container-2 {
+  display: flex;
+  flex-direction: column;
+  width: 83.72px;
+  height: 39.99px;
+  align-items: flex-start;
+  position: relative;
+}
+
+.apartment-booking .div-wrapper {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  height: 24px;
+}
+
+.apartment-booking .text-wrapper {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.apartment-booking .container-3 {
+  display: flex;
+  height: 15.99px;
+  align-items: flex-start;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.apartment-booking .text-wrapper-2 {
+  position: relative;
+  width: fit-content;
+  margin-top: -1.00px;
+  margin-right: -0.28px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #717171;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.apartment-booking .navigation {
+  display: flex;
+  flex-direction: column;
+  width: 255.2px;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 16px 16px 0px;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+}
+
+.apartment-booking .button {
+  all: unset;
+  box-sizing: border-box;
+  height: 48px;
+  align-items: center;
+  gap: 12px;
+  padding: 0px 0px 0px 16px;
+  align-self: stretch;
+  width: 100%;
+  background-color: #2e7d32;
+  display: flex;
+  position: relative;
+  border-radius: 12px;
+}
+
+.apartment-booking .icon-2 {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.apartment-booking .text {
+  position: relative;
+  width: 83.45px;
+  height: 24px;
+}
+
+.apartment-booking .text-wrapper-3 {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.apartment-booking .button-2 {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  height: 48px;
+  align-items: center;
+  gap: 12px;
+  padding: 0px 0px 0px 16px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.apartment-booking .vector-2 {
+  position: absolute;
+  width: 95.83%;
+  height: 83.33%;
+  top: 16.67%;
+  left: 4.17%;
+}
+
+.apartment-booking .vector-3 {
+  position: absolute;
+  width: 95.83%;
+  height: 62.50%;
+  top: 37.50%;
+  left: 4.17%;
+}
+
+.apartment-booking .text-2 {
+  position: relative;
+  width: 112.86px;
+  height: 24px;
+}
+
+.apartment-booking .text-wrapper-4 {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #1a1a1a;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.apartment-booking .vector-4 {
+  position: absolute;
+  width: 87.50%;
+  height: 95.83%;
+  top: 4.17%;
+  left: 12.50%;
+}
+
+.apartment-booking .vector-5 {
+  position: absolute;
+  width: 70.83%;
+  height: 70.83%;
+  top: 29.17%;
+  left: 29.17%;
+}
+
+.apartment-booking .vector-6 {
+  position: absolute;
+  width: 54.17%;
+  height: 77.08%;
+  top: 22.92%;
+  left: 45.83%;
+}
+
+.apartment-booking .text-3 {
+  position: relative;
+  width: 126.35px;
+  height: 24px;
+}
+
+.apartment-booking .oe-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 255.2px;
+  height: 68.8px;
+  align-items: flex-start;
+  padding: 16.8px 16px 0px;
+  position: relative;
+  border-top-width: 0.8px;
+  border-top-style: solid;
+  border-color: #0000001a;
+}
+
+.apartment-booking .oe {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.apartment-booking .icon-3 {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+}
+
+.apartment-booking .vector-7 {
+  position: absolute;
+  width: 91.67%;
+  height: 91.67%;
+  top: 8.33%;
+  left: 8.33%;
+}
+
+.apartment-booking .vector-8 {
+  position: absolute;
+  width: 37.50%;
+  height: 75.00%;
+  top: 25.00%;
+  left: 62.50%;
+}
+
+.apartment-booking .text-wrapper-5 {
+  position: absolute;
+  top: 9px;
+  left: 44px;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #1a1a1a;
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.apartment-booking .container-4 {
+  display: flex;
+  flex-direction: column;
+  height: 646.4px;
+  align-items: flex-start;
+  padding: 0px 0px -1.53e-05px;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+  margin-bottom: -0.40px;
+  overflow: hidden;
+}
+
+.apartment-booking .p {
+  display: flex;
+  width: 1280px;
+  height: 76.8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 24px;
+  position: relative;
+  background-color: #ffffff;
+  border-bottom-width: 0.8px;
+  border-bottom-style: solid;
+  border-color: #0000001a;
+}
+
+.apartment-booking .container-5 {
+  display: flex;
+  width: 149.65px;
+  height: 44px;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.apartment-booking .container-6 {
+  display: flex;
+  flex-direction: column;
+  width: 97.65px;
+  height: 44px;
+  align-items: flex-start;
+  position: relative;
+}
+
+.apartment-booking .div-2 {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  height: 20px;
+}
+
+.apartment-booking .text-wrapper-6 {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #717171;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.apartment-booking .container-7 {
+  display: flex;
+  width: 232.19px;
+  height: 40px;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.apartment-booking .container-8 {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+}
+
+.apartment-booking .container-9 {
+  display: flex;
+  flex-direction: column;
+  height: 39.99px;
+  align-items: flex-start;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+}
+
+.apartment-booking .text-wrapper-7 {
+  position: absolute;
+  top: -1px;
+  left: 42px;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #1a1a1a;
+  font-size: 16px;
+  text-align: right;
+  letter-spacing: 0;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.apartment-booking .text-wrapper-8 {
+  position: relative;
+  width: fit-content;
+  margin-top: -1.00px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #717171;
+  font-size: 12px;
+  text-align: right;
+  letter-spacing: 0;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.apartment-booking .container-10 {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #2e7d32;
+  border-radius: 26843500px;
+}
+
+.apartment-booking .vector-9 {
+  position: absolute;
+  width: 83.33%;
+  height: 41.67%;
+  top: 58.33%;
+  left: 16.67%;
+}
+
+.apartment-booking .vector-10 {
+  position: absolute;
+  width: 70.83%;
+  height: 91.67%;
+  top: 8.33%;
+  left: 29.17%;
+}
+
+.apartment-booking .button-3 {
+  flex-direction: column;
+  width: 36px;
+  height: 36px;
+  align-items: flex-start;
+  padding: 8px 8px 0px;
+  display: flex;
+  position: relative;
+  border-radius: 12px;
+}
+
+.apartment-booking .container-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 1280px;
+  align-items: flex-start;
+  padding: 24px 199.6px 0px 184.4px;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.apartment-booking .container-11 {
+  display: flex;
+  flex-direction: column;
+  height: 732.79px;
+  align-items: flex-start;
+  gap: 24px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.apartment-booking .div-wrapper-2 {
+  display: flex;
+  height: 36px;
+  align-items: flex-start;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.apartment-booking .text-wrapper-9 {
+  position: relative;
+  flex: 1;
+  margin-top: -1.00px;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #1a1a1a;
+  font-size: 30px;
+  letter-spacing: 0;
+  line-height: 36px;
+}
+
+.apartment-booking .container-12 {
+  display: flex;
+  flex-direction: column;
+  height: 444.79px;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 32px 32px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0px 4px 6px -4px #0000001a, 0px 10px 15px -3px #0000001a;
+  background: linear-gradient(
+    117deg,
+    rgba(46, 125, 50, 1) 0%,
+    rgba(46, 125, 50, 0.8) 100%
+  );
+}
+
+.apartment-booking .container-13 {
+  display: flex;
+  height: 59.99px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0px -8.39e-05px 0px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.apartment-booking .container-14 {
+  display: flex;
+  flex-direction: column;
+  width: 211.04px;
+  height: 59.99px;
+  align-items: flex-start;
+  gap: 4px;
+  position: relative;
+}
+
+.apartment-booking .heading {
+  height: 31.99px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.apartment-booking .text-wrapper-10 {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: 32px;
+  white-space: nowrap;
+}
+
+.apartment-booking .paragraph {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  height: 24px;
+  opacity: 0.9;
+}
+
+.apartment-booking .text-wrapper-11 {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.apartment-booking .container-15 {
+  display: flex;
+  flex-direction: column;
+  width: 127.26px;
+  height: 55.99px;
+  align-items: flex-start;
+  gap: 2.86e-06px;
+  padding: 8px 16px 0px;
+  position: relative;
+  background-color: #ffffff33;
+  border-radius: 12px;
+}
+
+.apartment-booking .container-16 {
+  display: flex;
+  height: 15.99px;
+  align-items: flex-start;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.apartment-booking .text-wrapper-12 {
+  position: relative;
+  flex: 1;
+  margin-top: -1.00px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 16px;
+}
+
+.apartment-booking .text-wrapper-13 {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.apartment-booking .container-17 {
+  display: flex;
+  flex-direction: column;
+  height: 215.2px;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.apartment-booking .container-18 {
+  display: flex;
+  height: 44.8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 1.91e-05px 0px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-bottom-width: 0.8px;
+  border-bottom-style: solid;
+  border-color: #ffffff33;
+}
+
+.apartment-booking .text-4 {
+  position: relative;
+  width: 81.85px;
+  height: 24px;
+  opacity: 0.9;
+}
+
+.apartment-booking .text-5 {
+  position: relative;
+  width: 45.92px;
+  height: 28px;
+}
+
+.apartment-booking .text-wrapper-14 {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: 28px;
+  white-space: nowrap;
+}
+
+.apartment-booking .container-19 {
+  display: flex;
+  height: 44.8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px -3.05e-05px 0px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-bottom-width: 0.8px;
+  border-bottom-style: solid;
+  border-color: #ffffff33;
+}
+
+.apartment-booking .text-6 {
+  position: relative;
+  width: 114.28px;
+  height: 24px;
+  opacity: 0.9;
+}
+
+.apartment-booking .text-7 {
+  position: relative;
+  width: 34.31px;
+  height: 28px;
+}
+
+.apartment-booking .container-20 {
+  display: flex;
+  height: 44.8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px -7.63e-06px 0px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-bottom-width: 0.8px;
+  border-bottom-style: solid;
+  border-color: #ffffff33;
+}
+
+.apartment-booking .text-8 {
+  position: relative;
+  width: 83.84px;
+  height: 24px;
+  opacity: 0.9;
+}
+
+.apartment-booking .text-9 {
+  position: relative;
+  width: 33.59px;
+  height: 28px;
+}
+
+.apartment-booking .container-21 {
+  display: flex;
+  height: 44.8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 1.72e-05px 0px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-bottom-width: 0.8px;
+  border-bottom-style: solid;
+  border-color: #ffffff33;
+}
+
+.apartment-booking .text-10 {
+  position: relative;
+  width: 110.26px;
+  height: 24px;
+  opacity: 0.9;
+}
+
+.apartment-booking .text-11 {
+  position: relative;
+  width: 30.74px;
+  height: 28px;
+}
+
+.apartment-booking .container-22 {
+  display: flex;
+  height: 57.6px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 1.53e-05px 0px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-top-width: 1.6px;
+  border-top-style: solid;
+  border-color: #ffffff4c;
+}
+
+.apartment-booking .text-12 {
+  position: relative;
+  width: 168.73px;
+  height: 28px;
+}
+
+.apartment-booking .text-wrapper-15 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: 28px;
+  white-space: nowrap;
+}
+
+.apartment-booking .text-13 {
+  position: relative;
+  width: 93.49px;
+  height: 40px;
+}
+
+.apartment-booking .text-wrapper-16 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 36px;
+  letter-spacing: 0;
+  line-height: 40px;
+  white-space: nowrap;
+}
+
+.apartment-booking .oe-2 {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  height: 48px;
+  background-color: #2e7d32;
+  border-radius: 10px;
+}
+
+.apartment-booking .icon-4 {
+  position: absolute;
+  top: 16px;
+  left: 394px;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+}
+
+.apartment-booking .vector-11 {
+  position: absolute;
+  width: 35157.60%;
+  height: -12054.66%;
+  top: 12154.66%;
+  left: -35057.60%;
+}
+
+.apartment-booking .vector-12 {
+  position: absolute;
+  width: 35157.60%;
+  height: -12075.49%;
+  top: 12175.49%;
+  left: -35057.60%;
+}
+
+.apartment-booking .text-wrapper-17 {
+  position: absolute;
+  top: 10px;
+  left: 426px;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 28px;
+  white-space: nowrap;
+}
+
+.apartment-booking .container-23 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(1, minmax(0, 1fr));
+  height: 132px;
+  gap: 16px;
+  padding: 0px -3.05e-05px 0px 0px;
+  position: absolute;
+  top: 601px;
+  left: 0;
+  width: 896px;
+}
+
+.apartment-booking .container-24 {
+  position: relative;
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 24px 24px 0px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 1px 2px -1px #0000001a, 0px 1px 3px #0000001a;
+}
+
+.apartment-booking .container-25 {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.apartment-booking .container-26 {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #dcfce7;
+  border-radius: 12px;
+}
+
+.apartment-booking .icon-5 {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+}
+
+.apartment-booking .vector-13 {
+  position: absolute;
+  width: 26343.66%;
+  height: -9165.38%;
+  top: 9265.38%;
+  left: -26243.66%;
+}
+
+.apartment-booking .vector-14 {
+  position: absolute;
+  width: 26314.50%;
+  height: -9173.73%;
+  top: 9273.73%;
+  left: -26214.50%;
+}
+
+.apartment-booking .container-27 {
+  position: relative;
+  width: 32.88px;
+  height: 24px;
+}
+
+.apartment-booking .text-wrapper-18 {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #717171;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.apartment-booking .text-wrapper-19 {
+  position: relative;
+  flex: 1;
+  margin-top: -1.00px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #1a1a1a;
+  font-size: 30px;
+  letter-spacing: 0;
+  line-height: 36px;
+}
+
+.apartment-booking .container-28 {
+  position: relative;
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 24px 24px 0px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 1px 2px -1px #0000001a, 0px 1px 3px #0000001a;
+}
+
+.apartment-booking .container-29 {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #fef9c2;
+  border-radius: 12px;
+}
+
+.apartment-booking .vector-15 {
+  position: absolute;
+  width: 27863.67%;
+  height: -9165.40%;
+  top: 9265.40%;
+  left: -27763.67%;
+}
+
+.apartment-booking .vector-16 {
+  position: absolute;
+  width: 27822.00%;
+  height: -9182.06%;
+  top: 9282.06%;
+  left: -27722.00%;
+}
+
+.apartment-booking .container-30 {
+  position: relative;
+  width: 61.86px;
+  height: 24px;
+}
+
+.apartment-booking .container-31 {
+  position: relative;
+  grid-row: 1 / 2;
+  grid-column: 3 / 4;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 24px 24px 0px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 1px 2px -1px #0000001a, 0px 1px 3px #0000001a;
+}
+
+.apartment-booking .container-32 {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #2e7d321a;
+  border-radius: 12px;
+}
+
+.apartment-booking .vector-17 {
+  position: absolute;
+  width: 29354.50%;
+  height: -9207.06%;
+  top: 9307.06%;
+  left: -29254.50%;
+}
+
+.apartment-booking .vector-18 {
+  position: absolute;
+  width: 29379.50%;
+  height: -9165.40%;
+  top: 9265.40%;
+  left: -29279.50%;
+}
+
+.apartment-booking .container-33 {
+  position: relative;
+  width: 43.28px;
+  height: 24px;
+}
