@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บ้านกฤติญา - ห้องพัก</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      * {
+        font-family: 'Prompt', sans-serif;
+      }
+    </style>
+</head>
+<body>
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a href="index.html" class="flex items-center gap-2">
+            <span class="text-xl font-semibold text-gray-900">บ้านกฤติญา</span>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="index.html" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
+            <a href="room.html" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
+            <a href="#" class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">เข้าสู่ระบบ</a>
+          </nav>
+
+          <button id="menuBtn" class="md:hidden p-2">
+            <span class="text-2xl">☰</span>
+          </button>
+        </div>
+
+        <nav id="mobileMenu" class="md:hidden py-4 border-t border-gray-200 hidden">
+          <div class="flex flex-col gap-4">
+            <a href="index.html" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
+            <a href="room.html" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
+            <a href="#" class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition w-full text-center">เข้าสู่ระบบ</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="min-h-screen bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <header class="mb-8">
+          <h1 class="text-3xl md:text-4xl mb-2 font-bold">ห้องพักทั้งหมด</h1>
+          <p class="text-gray-600">
+            ค้นหาห้องพักที่เหมาะสำหรับคุณจากห้องพักของบ้านกฤติญา
+          </p>
+        </header>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-8">
+          <h3 class="font-bold mb-4 text-lg">ตัวกรอง</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex items-center gap-3">
+              <input type="checkbox" id="available-only" class="w-5 h-5 rounded" style="accent-color: #2E7D32;">
+              <label for="available-only" class="cursor-pointer text-sm sm:text-base">
+                แสดงเฉพาะห้องที่ว่างเท่านั้น
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="A1" data-status="available">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" alt="ห้อง A1" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง A1</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,000/เดือน</p>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ว่าง</span>
+              </div>
+              <button class="w-full mt-4 bg-green-700 text-white hover:bg-green-800 py-2 rounded-lg font-semibold transition" onclick="goToDetail('A1')">
+                ดูรายละเอียด
+              </button>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="A2" data-status="available">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" alt="ห้อง B2" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง A2</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,000/เดือน</p>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ว่าง</span>
+              </div>
+              <button class="w-full mt-4 bg-green-700 text-white hover:bg-green-800 py-2 rounded-lg font-semibold transition" onclick="goToDetail('A2')">
+                ดูรายละเอียด
+              </button>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="A3" data-status="full">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400" alt="ห้อง A5" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง A3</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,000/เดือน</p>
+                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">เต็ม</span>
+              </div>
+              <button class="w-full mt-4 bg-gray-400 text-white py-2 rounded-lg font-semibold cursor-not-allowed" disabled>
+                เต็มแล้ว
+              </button>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="A4" data-status="available">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" alt="ห้อง B2" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง A4</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,000/เดือน</p>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ว่าง</span>
+              </div>
+              <button class="w-full mt-4 bg-green-700 text-white hover:bg-green-800 py-2 rounded-lg font-semibold transition" onclick="goToDetail('A4')">
+                ดูรายละเอียด
+              </button>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="A5" data-status="available">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" alt="ห้อง B2" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง A5</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,200/เดือน</p>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ว่าง</span>
+              </div>
+              <button class="w-full mt-4 bg-green-700 text-white hover:bg-green-800 py-2 rounded-lg font-semibold transition" onclick="goToDetail('A5')">
+                ดูรายละเอียด
+              </button>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="B1" data-status="available">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" alt="ห้อง B3" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง B1</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,000/เดือน</p>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ว่าง</span>
+              </div>
+              <button class="w-full mt-4 bg-green-700 text-white hover:bg-green-800 py-2 rounded-lg font-semibold transition" onclick="goToDetail('B1')">
+                ดูรายละเอียด
+              </button>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="B2" data-status="full">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400" alt="ห้อง B4" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง B2</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,000/เดือน</p>
+                <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">เต็ม</span>
+              </div>
+              <button class="w-full mt-4 bg-gray-400 text-white py-2 rounded-lg font-semibold cursor-not-allowed" disabled>
+                เต็มแล้ว
+              </button>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="B3" data-status="available">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" alt="ห้อง B5" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง B3</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,000/เดือน</p>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ว่าง</span>
+              </div>
+              <button class="w-full mt-4 bg-green-700 text-white hover:bg-green-800 py-2 rounded-lg font-semibold transition" onclick="goToDetail('B3')">
+                ดูรายละเอียด
+              </button>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="B4" data-status="available">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" alt="ห้อง B6" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง B4</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,000/เดือน</p>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ว่าง</span>
+              </div>
+              <button class="w-full mt-4 bg-green-700 text-white hover:bg-green-800 py-2 rounded-lg font-semibold transition" onclick="goToDetail('B4')">
+                ดูรายละเอียด
+              </button>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition" data-room="B5" data-status="available">
+            <figure class="m-0">
+              <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" alt="ห้อง B6" class="w-full h-48 object-cover">
+            </figure>
+            <div class="p-4">
+              <h3 class="text-xl font-bold mb-2">ห้อง B5</h3>
+              <div class="flex justify-between items-center">
+                <p class="text-green-700 font-bold text-lg">฿3,200/เดือน</p>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">ว่าง</span>
+              </div>
+              <button class="w-full mt-4 bg-green-700 text-white hover:bg-green-800 py-2 rounded-lg font-semibold transition" onclick="goToDetail('B5')">
+                ดูรายละเอียด
+              </button>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-green-700 text-white py-8 mt-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <p class="mb-2">© 2026 บ้านกฤติญา - ระบบจองห้องพัก</p>
+          <p class="text-white">ติดต่อเรา: 062-108-8868</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function goToDetail(roomId) {
+        window.location.href = `detail.html?room=${roomId}`;
+      }
+
+      function filterRooms() {
+        const checkbox = document.getElementById('available-only');
+        const roomCards = document.querySelectorAll('[data-room]');
+        
+        roomCards.forEach(card => {
+          const status = card.getAttribute('data-status');
+          if (checkbox.checked && status !== 'available') {
+            card.style.display = 'none';
+          } else {
+            card.style.display = '';
+          }
+        });
+      }
+
+      document.getElementById('menuBtn').addEventListener('click', function() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('hidden');
+      });
+
+      document.getElementById('available-only').addEventListener('change', filterRooms);
+    </script>
+</body>
+</html>

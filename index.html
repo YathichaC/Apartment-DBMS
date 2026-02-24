@@ -6,11 +6,13 @@
     <title>บ้านกฤติญา</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fondamento:ital@0;1&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       * {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Prompt', sans-serif;
       }
     </style>
 </head>
@@ -24,8 +26,7 @@
 
           <nav class="hidden md:flex items-center gap-6">
             <a href="#" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
-            <a href="#rooms" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
-            <a href="#contact" class="transition-colors" style="color: #2E7D32;">ติดต่อ</a>
+            <a href="room.html" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
             <a href="#" class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">เข้าสู่ระบบ</a>
           </nav>
 
@@ -37,75 +38,111 @@
         <nav id="mobileMenu" class="md:hidden py-4 border-t border-gray-200 hidden">
           <div class="flex flex-col gap-4">
             <a href="#" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
-            <a href="#rooms" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
-            <a href="#contact" class="transition-colors" style="color: #2E7D32;">ติดต่อ</a>
+            <a href="room.html" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
             <a href="#" class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition w-full text-center">เข้าสู่ระบบ</a>
           </div>
         </nav>
       </div>
     </header>
 
-    <main class="relative flex items-center justify-center" style="height: 600px; background-image: linear-gradient(rgba(46, 125, 50, 0.7), rgba(46, 125, 50, 0.7)), url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600'); background-size: cover; background-position: center;">
+    <main class="relative flex items-center justify-center" style="height: 400px; background-image: linear-gradient(rgba(46, 125, 50, 0.7), rgba(46, 125, 50, 0.7)), url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600'); background-size: cover; background-position: center;">
         <article class="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-          <h1 class="text-2xl md:text-4xl mb-4">ยินดีต้อนรับสู่ระบบจองห้องพักบ้านกฤติญา</h1>
-          <p class="text-lg md:text-lg mb-8 opacity-90">
+          <h1 class="text-lg sm:text-2xl md:text-4xl mb-4">ยินดีต้อนรับสู่ระบบจองห้องพักบ้านกฤติญา</h1>
+          <p class="text-sm sm:text-base md:text-lg mb-6 opacity-90">
             ขอบคุณที่เลือกเราเป็นส่วนหนึ่งของการเริ่มต้นใหม่ของคุณ
           </p>
-          <a href="#rooms" class="inline-block bg-white text-green-700 hover:bg-gray-100 text-lg px-8 py-6 rounded-lg font-semibold transition">
+          <a href="room.html" class="inline-block bg-white text-green-700 hover:bg-gray-100 text-sm sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold transition">
             ค้นหาห้องว่าง
           </a>
         </article>
     </main>
 
-    <section id="rooms" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <header class="text-center mb-12">
-            <h2 class="text-xl md:text-2xl mb-4">ห้องว่างพร้อมเช่า</h2>
-            <p class="text-gray-600 text-lg">
+    <section id="rooms" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+        <header class="text-center mb-8 sm:mb-12">
+            <h2 class="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4">ห้องว่างพร้อมเช่า</h2>
+            <p class="text-gray-600 text-sm sm:text-base md:text-lg">
                 สำรวจห้องว่างที่พร้อมเช่าอยู่
             </p>
         </header>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
             <article class="bg-white rounded-xl shadow-md overflow-hidden">
                 <figure class="m-0">
-                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" alt="Room 1" class="w-full h-48 object-cover">
+                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" alt="Room 1" class="w-full h-40 sm:h-48 object-cover">
                 </figure>
-                <div class="p-4">
-                    <h3 class="text-xl font-bold mb-2">ห้อง A1</h3>
-                    <p class="text-green-700 font-bold">฿3,000/เดือน</p>
+                <div class="p-3 sm:p-4">
+                    <h3 class="text-base sm:text-xl font-bold mb-2">ห้อง A1</h3>
+                    <p class="text-green-700 font-bold text-sm sm:text-base">฿3,000/เดือน</p>
                 </div>
             </article>
             <article class="bg-white rounded-xl shadow-md overflow-hidden">
                 <figure class="m-0">
-                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" alt="Room 2" class="w-full h-48 object-cover">
+                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" alt="Room 2" class="w-full h-40 sm:h-48 object-cover">
                 </figure>
-                <div class="p-4">
-                    <h3 class="text-xl font-bold mb-2">ห้อง B2</h3>
-                    <p class="text-green-700 font-bold">฿3,000/เดือน</p>
+                <div class="p-3 sm:p-4">
+                    <h3 class="text-base sm:text-xl font-bold mb-2">ห้อง B2</h3>
+                    <p class="text-green-700 font-bold text-sm sm:text-base">฿3,000/เดือน</p>
                 </div>
             </article>
             <article class="bg-white rounded-xl shadow-md overflow-hidden">
                 <figure class="m-0">
-                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400" alt="Room 3" class="w-full h-48 object-cover">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400" alt="Room 3" class="w-full h-40 sm:h-48 object-cover">
                 </figure>
-                <div class="p-4">
-                    <h3 class="text-xl font-bold mb-2">ห้อง A5</h3>
-                    <p class="text-green-700 font-bold">฿3,200/เดือน</p>
+                <div class="p-3 sm:p-4">
+                    <h3 class="text-base sm:text-xl font-bold mb-2">ห้อง A5</h3>
+                    <p class="text-green-700 font-bold text-sm sm:text-base">฿3,200/เดือน</p>
                 </div>
             </article>
         </div>
         <footer class="text-center">
-          <a href="#rooms" class="inline-block bg-green-700 text-white hover:bg-green-800 text-lg px-8 py-3 rounded-lg font-semibold transition">
+          <a href="room.html" class="inline-block bg-green-700 text-white hover:bg-green-800 text-sm sm:text-base md:text-lg px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold transition">
             ดูห้องทั้งหมด
           </a>
         </footer>
       </section>
 
-      <section class="bg-gray-100 py-16">
+      <section class="bg-gray-100 py-8 sm:py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <header class="text-center mb-12">
-            <h2 class="text-xl md:text-2xl mb-4">แผนผังที่ตั้งหอพัก</h2>
+          <header class="text-center mb-8 sm:mb-12">
+            <h2 class="text-lg sm:text-xl md:text-2xl mb-4">แผนผังที่ตั้งหอพัก</h2>
           </header>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div class="order-2 lg:order-1">
+              <h3 class="text-base sm:text-lg md:text-xl font-bold mb-4" style="color: #2E7D32;">บ้านกฤติญา</h3>
+              <ul class="text-sm sm:text-base text-gray-700 space-y-3 mb-6">
+                <li class="flex items-start gap-3">
+                  <span style="color: #2E7D32;" class="font-bold">📍</span>
+                  <span>300/17 ซ.โนนพิบูลย์ 6 ถ.ศุภกิจจรรยา ต.หมากแข้ง อ.เมือง จ.อุดรธานี 41000</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span style="color: #2E7D32;" class="font-bold">📞</span>
+                  <span>โทร: 062-108-8868</span>
+                </li>
+              </ul>
+              <h4 class="text-base sm:text-lg font-semibold mb-3" style="color: #2E7D32;">ระยะห่างจากจุดแลนด์มาร์ค</h4>
+              <ul class="text-sm sm:text-base text-gray-700 space-y-2 mb-6">
+                <li class="flex items-start gap-3">
+                  <span>สวนน้ำยูโซเทล: 50 เมตร</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span>สวนสาธารณะหนองประจักษ์: 650 เมตร</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span>โลตัส อุดรธานี: 800 เมตร</span>
+                </li>
+              </ul>
+            </div>
+            <div class="order-1 lg:order-2 flex justify-center">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d951.6734254729286!2d102.78260126962925!3d17.426480998966717!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTfCsDI1JzM1LjMiTiAxMDLCsDQ2JzU5LjciRQ!5e0!3m2!1sth!2sth!4v1771914831185!5m2!1sth!2sth" width="100%" height="300" style="border:0; max-width: 600px; border-radius: 10px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </div>
         </div>
     </section>
+
+    <script>
+      document.getElementById('menuBtn').addEventListener('click', function() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('hidden');
+      });
+    </script>
 </body>
 </html>
