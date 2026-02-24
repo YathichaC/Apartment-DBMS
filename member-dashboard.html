@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บ้านกฤติญา - Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      * {
+        font-family: 'Prompt', sans-serif;
+      }
+      html, body {
+        height: 100%;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      main {
+        flex: 1;
+      }
+      .sidebar-nav button.active {
+        background-color: #2E7D32;
+        color: white;
+      }
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+      }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="h-screen flex flex-col md:flex-row overflow-hidden">
+      <!-- Mobile Header -->
+      <div class="md:hidden bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+        <span class="text-xl font-semibold">Admin Panel</span>
+        <button id="mobileMenuBtn" class="p-2">
+          <i class="fas fa-bars w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- Sidebar - Desktop -->
+      <div class="hidden md:block w-64 bg-white border-r border-gray-200 overflow-y-auto">
+        <div class="p-6 border-b border-gray-200">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-green-700 rounded-lg flex items-center justify-center">
+              <i class="fas fa-building text-white"></i>
+            </div>
+            <span class="text-xl font-semibold">Admin Panel</span>
+          </div>
+        </div>
+
+        <nav class="p-4 space-y-2 sidebar-nav">
+          <button onclick="switchPage('dashboard')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-100 active" style="color: #2E7D32;">
+            <i class="fas fa-chart-line w-5 h-5"></i>
+            <span>Dashboard</span>
+          </button>
+          <button onclick="switchPage('rooms')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
+            <i class="fas fa-door-open w-5 h-5"></i>
+            <span>Rooms</span>
+          </button>
+          <button onclick="switchPage('bookings')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
+            <i class="fas fa-calendar w-5 h-5"></i>
+            <span>Bookings</span>
+          </button>
+          <button onclick="switchPage('users')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
+            <i class="fas fa-users w-5 h-5"></i>
+            <span>Users</span>
+          </button>
+        </nav>
+
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 w-64 bg-white">
+          <button onclick="goHome()" class="w-full flex items-center gap-2 px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
+            <i class="fas fa-sign-out-alt w-5 h-5"></i>
+            <span>Exit Admin</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sidebar - Mobile -->
+      <div id="mobileSidebar" class="hidden md:hidden fixed inset-0 z-40 bg-black/50" onclick="closeMobileMenu()">
+        <div class="w-64 h-full bg-white" onclick="event.stopPropagation()">
+          <nav class="p-4 space-y-2 sidebar-nav">
+            <button onclick="switchPageMobile('dashboard')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100 active" style="color: #2E7D32;">
+              <i class="fas fa-chart-line w-5 h-5"></i>
+              <span>Dashboard</span>
+            </button>
+            <button onclick="switchPageMobile('rooms')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-door-open w-5 h-5"></i>
+              <span>Rooms</span>
+            </button>
+            <button onclick="switchPageMobile('bookings')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-calendar w-5 h-5"></i>
+              <span>Bookings</span>
+            </button>
+            <button onclick="switchPageMobile('users')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-users w-5 h-5"></i>
+              <span>Users</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <main class="flex-1 overflow-auto">
+        <div class="p-4 md:p-8">
+          <!-- Dashboard View -->
+          <div id="dashboard" class="view active">
+            <h1 class="text-3xl font-bold mb-8">Dashboard Overview</h1>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="text-gray-600 mb-2">Total Rooms</div>
+                <div class="text-3xl font-bold" style="color: #2E7D32;">10</div>
+              </div>
+              <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="text-gray-600 mb-2">Available Rooms</div>
+                <div class="text-3xl font-bold" style="color: #2E7D32;">8</div>
+              </div>
+              <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="text-gray-600 mb-2">Occupied Rooms</div>
+                <div class="text-3xl font-bold text-gray-700">2</div>
+              </div>
+              <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="text-gray-600 mb-2">Total Bookings</div>
+                <div class="text-3xl font-bold text-gray-700">15</div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+              <h3 class="mb-4 font-bold text-lg">Recent Activity</h3>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between py-3 border-b border-gray-200">
+                  <div>
+                    <div class="font-medium">New Booking - Room A1</div>
+                    <div class="text-sm text-gray-500">2 hours ago</div>
+                  </div>
+                  <span style="color: #2E7D32;" class="font-semibold">฿5,500</span>
+                </div>
+                <div class="flex items-center justify-between py-3 border-b border-gray-200">
+                  <div>
+                    <div class="font-medium">Room B1 Status Changed</div>
+                    <div class="text-sm text-gray-500">5 hours ago</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between py-3">
+                  <div>
+                    <div class="font-medium">New User Registration</div>
+                    <div class="text-sm text-gray-500">1 day ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rooms Management View -->
+          <div id="rooms" class="view">
+            <h1 class="text-3xl font-bold mb-8">Room Management</h1>
+
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="text-left p-4">Room Number</th>
+                      <th class="text-left p-4">Price</th>
+                      <th class="text-left p-4">Status</th>
+                      <th class="text-left p-4">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4 font-medium">A1</td>
+                      <td class="p-4">฿3,000/month</td>
+                      <td class="p-4"><span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">Available</span></td>
+                      <td class="p-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                          <input type="checkbox" class="w-5 h-5 rounded" checked>
+                          <span class="text-sm">Available</span>
+                        </label>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4 font-medium">A2</td>
+                      <td class="p-4">฿3,000/month</td>
+                      <td class="p-4"><span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">Available</span></td>
+                      <td class="p-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                          <input type="checkbox" class="w-5 h-5 rounded" checked>
+                          <span class="text-sm">Available</span>
+                        </label>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4 font-medium">A3</td>
+                      <td class="p-4">฿3,000/month</td>
+                      <td class="p-4"><span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">Full</span></td>
+                      <td class="p-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                          <input type="checkbox" class="w-5 h-5 rounded">
+                          <span class="text-sm">Occupied</span>
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bookings View -->
+          <div id="bookings" class="view">
+            <h1 class="text-3xl font-bold mb-8">Bookings</h1>
+
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="text-left p-4">Booking ID</th>
+                      <th class="text-left p-4">Guest Name</th>
+                      <th class="text-left p-4">Room</th>
+                      <th class="text-left p-4">Move-in Date</th>
+                      <th class="text-left p-4">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4">#BK001</td>
+                      <td class="p-4">John Smith</td>
+                      <td class="p-4">A1</td>
+                      <td class="p-4">Mar 1, 2026</td>
+                      <td class="p-4"><span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">Confirmed</span></td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4">#BK002</td>
+                      <td class="p-4">Sarah Johnson</td>
+                      <td class="p-4">B1</td>
+                      <td class="p-4">Mar 5, 2026</td>
+                      <td class="p-4"><span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm">Pending</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Users View -->
+          <div id="users" class="view">
+            <h1 class="text-3xl font-bold mb-8">User Management</h1>
+
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="text-left p-4">Name</th>
+                      <th class="text-left p-4">Email</th>
+                      <th class="text-left p-4">Phone</th>
+                      <th class="text-left p-4">Room</th>
+                      <th class="text-left p-4">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4">John Smith</td>
+                      <td class="p-4">john@example.com</td>
+                      <td class="p-4">+66 (555) 123-4567</td>
+                      <td class="p-4">A1</td>
+                      <td class="p-4"><span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">Active</span></td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="p-4">Sarah Johnson</td>
+                      <td class="p-4">sarah@example.com</td>
+                      <td class="p-4">+66 (555) 234-5678</td>
+                      <td class="p-4">B1</td>
+                      <td class="p-4"><span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">Active</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      function switchPage(page) {
+        // Hide all views
+        document.querySelectorAll('.view').forEach(view => {
+          view.classList.remove('active');
+        });
+
+        // Remove active class from all buttons
+        document.querySelectorAll('.sidebar-nav button').forEach(btn => {
+          btn.classList.remove('active');
+          btn.style.color = '';
+        });
+
+        // Show selected view
+        document.getElementById(page).classList.add('active');
+        event.target.closest('button').classList.add('active');
+        event.target.closest('button').style.color = '#2E7D32';
+      }
+
+      function switchPageMobile(page) {
+        switchPage(page);
+        closeMobileMenu();
+      }
+
+      function closeMobileMenu() {
+        document.getElementById('mobileSidebar').classList.add('hidden');
+      }
+
+      document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+        document.getElementById('mobileSidebar').classList.toggle('hidden');
+      });
+
+      function goHome() {
+        window.location.href = 'index.html';
+      }
+    </script>
+</body>
+</html>
