@@ -1,353 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>GreenStay — Member Dashboard (Static)</title>
-    <link rel="stylesheet" href="globals.css" />
-    <link rel="stylesheet" href="styleguide.css" />
-    <link rel="stylesheet" href="style.css" />
-    <style>
-      /* Minimal layout helpers to make the static page usable without Tailwind */
-      :root{--primary:#2e7d32;--muted:#f3f4f6;--border:#e6e6e6}
-      body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;margin:0;background:var(--muted);color:#111}
-      .app{display:flex;min-height:100vh}
-      .sidebar{width:260px;background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column}
-      .topbar{background:#fff;border-bottom:1px solid var(--border);padding:16px;display:flex;justify-content:space-between;align-items:center}
-      .content{flex:1;padding:24px;overflow:auto}
-      .nav-btn{display:flex;align-items:center;gap:8px;padding:10px;border-radius:8px;border:none;background:transparent;cursor:pointer;width:100%;text-align:left}
-      .nav-btn.active{background:var(--primary);color:#fff}
-      .card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
-      .grid{display:grid;gap:16px}
-      .grid.cols-3{grid-template-columns:repeat(3,1fr)}
-      .btn{background:var(--primary);color:#fff;border:none;padding:12px 16px;border-radius:8px;cursor:pointer}
-      .btn.ghost{background:transparent;color:inherit;border:1px solid var(--border)}
-      .stat{font-size:2rem;font-weight:600}
-      table{width:100%;border-collapse:collapse}
-      th,td{padding:12px;border-bottom:1px solid var(--border);text-align:left}
-      .badge{display:inline-flex;gap:6px;padding:6px 10px;border-radius:999px;font-size:0.8rem}
-      .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5)}
-      .modal .panel{background:#fff;border-radius:8px;max-width:900px;width:90%;padding:16px}
-      input[type=file]{display:block}
-      img.preview{max-width:100%;height:auto;border-radius:8px}
-      @media(max-width:768px){.sidebar{display:none}}
-    </style>
-  </head>
-  <body>
-    <div class="app">
-      <aside class="sidebar">
-        <div style="padding:16px;border-bottom:1px solid var(--border)">
-          <div style="font-weight:700">GreenStay</div>
-          <div style="font-size:12px;color:#666">Member Portal</div>
-        </div>
 
-        <nav style="padding:12px;flex:1;display:flex;flex-direction:column;gap:6px">
-          <button class="nav-btn active" data-page="dashboard">Dashboard</button>
-          <button class="nav-btn" data-page="history">Payment History</button>
-        </nav>
-      </aside>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Member Dashboard — บ้านกฤติญา</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+    }
+  </style>
+</head>
 
-      <main style="flex:1;display:flex;flex-direction:column">
-        <header class="topbar">
-          <div>
-            <div style="font-size:12px;color:#666">Welcome back</div>
-            <div style="font-weight:700" id="roomNumber">Room 101</div>
-          </div>
-          <div style="display:flex;gap:12px;align-items:center">
-            <div style="text-align:right">
-              <div id="memberName" style="font-weight:600">John Smith</div>
-              <div style="font-size:12px;color:#666" id="memberEmail">john.smith@email.com</div>
-            </div>
-            <button class="btn ghost" id="logoutBtn2">Logout</button>
-          </div>
-        </header>
-
-        <div class="content" id="mainContent">
-          <!-- JS will render pages here -->
-        </div>
-      </main>
-    </div>
-
-    <!-- Modal for slip view -->
-    <div id="slipModal" class="modal" style="display:none">
-      <div class="panel">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <strong>Payment Slip</strong>
-          <button id="closeSlip">Close</button>
-        </div>
-        <div id="slipContainer"></div>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-white border-b p-4 flex items-center justify-between sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+      <button id="mobileMenuBtn" class="md:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+      <div>
+        <div class="font-semibold text-lg text-gray-900 leading-none">บ้านกฤติญา</div>
+        <div class="text-xs text-gray-500 mt-1">Member Portal</div>
       </div>
     </div>
+    <div class="flex items-center gap-4">
+      <div class="text-right hidden sm:block">
+        <div class="text-sm font-semibold text-gray-800" id="memberUsername">user_a1</div>
+      </div>
+      <a href="/" class="text-sm text-green-700 font-medium whitespace-nowrap">ออกจากระบบ</a>
+    </div>
+  </header>
 
-    <script>
-      // Mock data (adapted from the React version)
-      const member = { name: 'John Smith', email: 'john.smith@email.com', roomNumber: 'Room 101' };
-      let expenses = [
-        { id: 1, month: 'February', year: 2026, dueDate: '2026-03-05', roomRent: 450, electricityCost: 45, waterCost: 25, otherCharges: 10, total: 530, paymentStatus: 'pending', slipUrl: null },
-        { id: 2, month: 'January', year: 2026, dueDate: '2026-02-05', roomRent: 450, electricityCost: 40, waterCost: 20, otherCharges: 10, total: 520, paymentStatus: 'paid', slipUrl: null },
-        { id: 3, month: 'December', year: 2025, dueDate: '2026-01-05', roomRent: 450, electricityCost: 35, waterCost: 20, otherCharges: 10, total: 515, paymentStatus: 'paid', slipUrl: null }
-      ];
+  <!-- Mobile Sidebar Overlay -->
+  <div id="mobileSidebar"
+    class="fixed inset-0 bg-black/50 z-50 hidden md:hidden transition-opacity duration-300 opacity-0">
+    <aside id="mobileSidebarPanel"
+      class="w-64 bg-white h-full shadow-xl flex flex-col transform -translate-x-full transition-transform duration-300 ease-in-out">
+      <div class="p-4 border-b flex justify-between items-center bg-gray-50">
+        <div>
+          <div class="text-xs text-gray-500">ยินดีต้อนรับกลับ</div>
+          <div class="font-bold text-lg text-green-700" id="mobileRoomNumber">Room 101</div>
+        </div>
+        <button id="closeMobileMenuBtn" class="p-2 -mr-2 text-gray-600 hover:bg-gray-100 rounded focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <nav class="p-4 space-y-2 overflow-y-auto flex-1">
+        <button data-page="dashboard"
+          class="w-full text-left px-4 py-2.5 rounded-lg page-btn font-medium transition-colors duration-200">แดชบอร์ด</button>
+        <button data-page="history"
+          class="w-full text-left px-4 py-2.5 rounded-lg page-btn font-medium transition-colors duration-200">ประวัติการชำระเงิน</button>
+      </nav>
+    </aside>
+  </div>
 
-      // App state
-      let activePage = 'dashboard';
-      let uploadedSlip = null; // data URL
-      let uploadedFile = null;
-      let paymentMethod = 'account'; // 'account' or 'qr'
+  <div class="flex-1 flex overflow-hidden">
+    <aside class="w-64 bg-white border-r hidden md:flex flex-col">
+      <div class="p-6 border-b bg-gray-50">
+        <div class="text-sm text-gray-500 mb-1">ยินดีต้อนรับกลับ</div>
+        <div class="font-bold text-2xl text-green-700" id="desktopRoomNumber">Room 101</div>
+      </div>
+      <nav class="p-4 space-y-2 flex-1">
+        <button data-page="dashboard"
+          class="w-full text-left px-4 py-2.5 rounded-lg page-btn font-medium transition-colors duration-200">แดชบอร์ด</button>
+        <button data-page="history"
+          class="w-full text-left px-4 py-2.5 rounded-lg page-btn font-medium transition-colors duration-200">ประวัติการชำระเงิน</button>
+      </nav>
+    </aside>
 
-      // Element refs
-      const mainContent = document.getElementById('mainContent');
-      const roomNumberEl = document.getElementById('roomNumber');
-      const memberNameEl = document.getElementById('memberName');
-      const memberEmailEl = document.getElementById('memberEmail');
-      const slipModal = document.getElementById('slipModal');
-      const slipContainer = document.getElementById('slipContainer');
+    <main class="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
+      <div id="mainContent" class="max-w-4xl mx-auto w-full">
+        <!-- JS will render pages here -->
+      </div>
+    </main>
+  </div>
 
-      // Init member info
-      roomNumberEl.textContent = member.roomNumber;
-      memberNameEl.textContent = member.name;
-      memberEmailEl.textContent = member.email;
+  <!-- Modal for slip view -->
+  <div id="slipModal"
+    class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 items-center justify-center p-4 transition-opacity">
+    <div class="bg-white p-5 rounded-2xl shadow-xl max-w-lg w-full mx-auto transform transition-all">
+      <div class="flex justify-between items-center mb-4 pb-2 border-b">
+        <h3 class="font-bold text-lg text-gray-800">สลิปการโอนเงิน</h3>
+        <button id="closeSlip"
+          class="text-gray-400 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-full p-2 focus:outline-none transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div id="slipContainer" class="flex justify-center bg-gray-50 rounded-xl p-2 min-h-[50vh]"></div>
+    </div>
+  </div>
 
-      // Navigation
-      document.querySelectorAll('.nav-btn').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-          document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-          btn.classList.add('active');
-          activePage = btn.dataset.page;
-          render();
-        })
-      });
+  <script src="js/member-dashboard.js"></script>
+</body>
 
-      document.getElementById('logoutBtn2').addEventListener('click',()=>{ alert('Logging out (placeholder)'); });
-
-      function setPaymentMethod(m){ paymentMethod = m; render(); }
-
-      function getCurrentExpense(){
-        return expenses.find(e => e.paymentStatus === 'pending') || null;
-      }
-
-      // Render functions for pages
-      function renderDashboard(){
-        const current = getCurrentExpense();
-        let html = '<div class="grid">';
-        html += '<div class="card">';
-        html += '<h2 style="margin:0 0 8px 0">Dashboard</h2>';
-        if(current){
-          html += `
-            <div style="background:linear-gradient(135deg,var(--primary),#1b5e20);color:#fff;padding:18px;border-radius:10px;margin-bottom:12px">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start">
-                <div>
-                  <h3 style="margin:0">Monthly Expenses</h3>
-                  <div style="opacity:0.9">${current.month} ${current.year}</div>
-                </div>
-                <div style="background:rgba(255,255,255,0.12);padding:8px;border-radius:8px">Due: <div style="font-weight:700">${current.dueDate}</div></div>
-              </div>
-              <div style="margin-top:12px">
-                <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid rgba(255,255,255,0.08)"><span>Room Rent</span><span style="font-weight:700">$${current.roomRent}</span></div>
-                <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid rgba(255,255,255,0.08)"><span>Electricity Cost</span><span style="font-weight:700">$${current.electricityCost}</span></div>
-                <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid rgba(255,255,255,0.08)"><span>Water Cost</span><span style="font-weight:700">$${current.waterCost}</span></div>
-                <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid rgba(255,255,255,0.08)"><span>Other Charges</span><span style="font-weight:700">$${current.otherCharges}</span></div>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:2px solid rgba(255,255,255,0.18);padding-top:12px">
-                <div style="font-size:1.2rem">Total Amount Due</div>
-                <div style="font-size:2rem;font-weight:800">$${current.total}</div>
-              </div>
-            </div>
-            <button class="btn" onclick="goTo('payment')">Pay Now</button>
-          `;
-        } else {
-          html += '<div style="text-align:center;padding:24px"><strong>All Paid Up!</strong><div style="opacity:0.8">You have no pending payments.</div></div>'
-        }
-        html += '</div>';
-
-        html += '</div>';
-        return html;
-      }
-
-      function renderPayment(){
-        const current = getCurrentExpense();
-        function toBuddhistYear(y){ return y + 543; }
-        function fmtAmt(n){ return '฿' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
-
-        if(!current){
-          return '<div class="card"><div style="padding:24px;text-align:center">ไม่มีค่าที่ต้องชำระในขณะนี้ <button class="btn" onclick="goTo(\'dashboard\')">กลับ</button></div></div>';
-        }
-
-        const buddhistYear = toBuddhistYear(current.year);
-        const total = fmtAmt(current.total);
-        const room = member.roomNumber || '';
-        const accActive = paymentMethod === 'account';
-        const qrActive = paymentMethod === 'qr';
-
-        let html = '<div class="card">';
-        html += '<div class="div-wrapper"><div class="text-wrapper">ชำระค่าใช้จ่าย</div></div>';
-        html += `<div class="div-wrapper"><div class="div">ชำระค่าใช้จ่ายเดือน ${current.month} ${buddhistYear}</div></div>`;
-        html += '<div class="container-2" style="display:flex;gap:16px;margin-top:12px">';
-        
-           
-        // LEFT: booking-form
-        html += '<div class="booking-form" style="flex:1">';
-        html += '<div class="form" style="background:#fff;border-radius:8px;padding:16px">';
-         // Method selector buttons
-        html += `<button class="btn" style="margin-right:8px;${accActive?'background:var(--primary);color:#fff':'background:transparent;border:1px solid var(--border);color:inherit'}" onclick="setPaymentMethod('account')"><div class="text-wrapper-7">เลขบัญชี</div></button>`;
-        html += `<button class="btn" style="margin-bottom:16px;${qrActive?'background:var(--primary);color:#fff':'background:transparent;border:1px solid var(--border);color:inherit'}" onclick="setPaymentMethod('qr')"><div class="text-wrapper-8">คิวอาร์โค้ด</div></button>`;
-    
-        // Account details (shown when account method is selected)
-        if(accActive){
-          html += '<div class="label"><div class="text-wrapper-2">123-456-7890</div></div>';
-          html += '<div class="label-2"><div class="text-wrapper-3">นางสาวชิดชา จันทรศรีชนะพา</div></div>';
-          html += '<div class="label-3"><div class="text-wrapper-3">ธนาคารไทยกรุงสิกร</div></div>';
-        } else {
-          // QR code (shown when QR method is selected)
-          const qrData = encodeURIComponent(`GreenStay:${member.roomNumber}:${total}`);
-          const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${qrData}`;
-          html += `<div style="text-align:center;margin-bottom:12px">`;
-          html += `<div style="margin-bottom:8px;font-weight:700">สแกนเพื่อชำระ</div>`;
-          html += `<img src="${qrSrc}" alt="QR Code" style="width:200px;height:200px">`;
-          html += `<div style="margin-top:8px;font-weight:700;color:var(--primary)">${total}</div>`;
-          html += '</div>';
-        }
-
-        // Upload Payment Slip section
-        html += '<div class="text-wrapper-4" style="margin-top:16px;margin-bottom:8px">Upload Payment Slip</div>';
-        if(!uploadedSlip){
-          html += '<label style="display:block;cursor:pointer">';
-          html += '<div class="input" style="border:2px dashed var(--border);border-radius:8px;padding:12px;text-align:center">';
-          html += '<div class="input-2"><div class="text-wrapper-5">Choose File</div></div>';
-          html += '<div class="text-wrapper-6">No file chosen</div>';
-          html += '</div>';
-          html += '<input type="file" id="fileInput" accept="image/*" style="display:none">';
-          html += '</label>';
-        } else {
-          html += `<div style="position:relative;margin-bottom:12px"><img src="${uploadedSlip}" class="preview" alt="Uploaded slip" style="border-radius:8px;width:100%"><button onclick="clearUpload()" style="position:absolute;right:8px;top:8px;background:#f44;color:#fff;border:none;padding:8px;border-radius:4px;cursor:pointer">Remove</button></div>`;
-        }
-
-        // Submit button
-        html += `<button class="button btn" style="width:100%;margin-top:12px" onclick="submitPayment()"><div class="text-wrapper-7">ชำระเงิน</div></button>`;
-        html += '<div class="rectangle" style="height:12px;margin:12px 0;background:transparent"></div>';
-
- 
-
-        html += '</div>'; // end form
-        html += '</div>'; // end booking-form
-
-        // RIGHT: booking-summary
-        html += '<div class="booking-summary" style="width:320px;background:#fff;border-radius:8px;padding:16px">';
-        html += '<div class="heading"><div class="text-wrapper-9">สรุปค่าใช้จ่าย</div></div>';
-        html += '<div class="room" style="height:1px;background:var(--border);margin:8px 0"></div>';
-        html += '<div class="container-3" style="display:flex;justify-content:space-between;margin-bottom:8px">';
-        html += '<div class="container-4"><div class="text-wrapper-10">Room:</div></div>';
-        html += `<div class="container-4"><div class="text-wrapper-11">${room}</div></div>`;
-        html += '</div>';
-
-        html += '<div style="margin-top:8px">';
-        html += `<div style="display:flex;justify-content:space-between;margin-bottom:6px"><div class="text-wrapper-12">ค่าห้อง:</div><div>${fmtAmt(current.roomRent)}</div></div>`;
-        html += `<div style="display:flex;justify-content:space-between;margin-bottom:6px"><div class="text-wrapper-12">ค่าไฟฟ้า:</div><div>${fmtAmt(current.electricityCost)}</div></div>`;
-        html += `<div style="display:flex;justify-content:space-between;margin-bottom:6px"><div class="text-wrapper-12">ค่าน้ำ:</div><div>${fmtAmt(current.waterCost)}</div></div>`;
-        html += `<div style="display:flex;justify-content:space-between;margin-bottom:12px"><div class="text-wrapper-12">อื่นๆ:</div><div>${fmtAmt(current.otherCharges)}</div></div>`;
-        html += '<div style="border-top:1px solid var(--border);padding-top:8px;margin-top:8px">';
-        html += '<div class="container-8" style="display:flex;justify-content:space-between;font-weight:700">';
-        html += '<div class="container-4"><div class="text-wrapper-16">ค่าใช้จ่ายรวม:</div></div>';
-        html += `<div class="text-wrapper-17" style="color:var(--primary);font-size:1.2rem">${total}</div>`;
-        html += '</div>';
-        html += '</div>';
-        html += '</div>';
-
-        html += '</div>'; // end booking-summary
-
-        html += '</div>'; // end container-2
-        html += '</div>'; // end card
-        return html;
-      }
-
-      function renderHistory(){
-        // Render a Thai-styled payment history layout using current expenses
-        function toBuddhistYear(y){ return y + 543; }
-        function fmtAmt(n){ return '฿' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
-
-        let html = `
-          <div class="card">
-            <h2>ประวัติค่าใช้จ่าย</h2>
-            <div style="margin-top:12px">
-              <div style="display:grid;grid-template-columns:200px 120px 1fr 120px;gap:8px;padding:12px;border-bottom:1px solid var(--border);font-weight:600;color:#444">
-                <div>เดือน</div>
-                <div>ปี</div>
-                <div>ค่าใช้จ่ายรวม</div>
-                <div>สลิปการโอนเงิน</div>
-              </div>
-        `;
-
-        // List expenses (most recent first)
-        expenses.slice().reverse().forEach(exp => {
-          const buddhistYear = toBuddhistYear(exp.year);
-          const amount = fmtAmt(exp.total);
-          const month = exp.month;
-          const slipCell = exp.slipUrl ? `<button class="btn ghost" onclick="viewSlip('${exp.slipUrl}')">ดูสลิป</button>` : '<span style="color:#888">-</span>';
-
-          html += `
-            <div style="display:grid;grid-template-columns:200px 120px 1fr 120px;gap:8px;padding:12px;border-bottom:1px solid var(--border);align-items:center">
-              <div>${month}</div>
-              <div>${buddhistYear}</div>
-              <div style="font-weight:700">${amount}</div>
-              <div>${slipCell}</div>
-            </div>
-          `;
-        });
-
-        html += `
-            </div>
-          </div>
-        `;
-
-        return html;
-      }
-
-      function render(){
-        if(activePage==='dashboard') mainContent.innerHTML = renderDashboard();
-        if(activePage==='payment') mainContent.innerHTML = renderPayment();
-        if(activePage==='history') mainContent.innerHTML = renderHistory();
-
-        // attach file input handler if present
-        const fileInput = document.getElementById('fileInput');
-        if(fileInput){
-          fileInput.addEventListener('change', (e)=>{
-            const file = e.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(ev){ uploadedSlip = ev.target.result; uploadedFile = file; render(); };
-            reader.readAsDataURL(file);
-          })
-        }
-      }
-
-      // Navigation helper
-      function goTo(page){
-        activePage = page;
-        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active', b.dataset.page===page));
-        render();
-      }
-
-      function clearUpload(){ uploadedSlip = null; uploadedFile = null; render(); }
-
-      function submitPayment(){
-        const current = getCurrentExpense();
-        if(!uploadedSlip || !current){ alert('Please upload a payment slip'); return; }
-        // set expense to pending (already pending) and store slip
-        expenses = expenses.map(e=> e.id===current.id ? {...e, paymentStatus:'pending', slipUrl: uploadedSlip} : e);
-        uploadedSlip = null; uploadedFile = null; activePage='dashboard';
-        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active', b.dataset.page==='dashboard'));
-        alert('Payment slip submitted successfully — awaiting verification.');
-        render();
-      }
-
-      function viewSlip(url){
-        slipContainer.innerHTML = `<img src="${url}" alt="Payment slip" style="max-width:100%" />`;
-        slipModal.style.display = 'flex';
-      }
-
-      document.getElementById('closeSlip').addEventListener('click', ()=>{ slipModal.style.display='none'; });
-
-      // initial render
-      render();
-    </script>
-  </body>
 </html>
