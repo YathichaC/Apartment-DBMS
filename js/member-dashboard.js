@@ -1,4 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const roomId = localStorage.getItem('tenantRoomId');
+  const username = localStorage.getItem('tenantUsername');
+
+  // ตรวจสอบการล็อกอิน
+  if (!roomId || !username) {
+    alert('กรุณาเข้าสู่ระบบก่อน');
+    window.location.href = 'auth.html';
+    return;
+  }
+
+  // แสดงข้อมูลผู้ใช้
+  document.getElementById('memberUsername').textContent = username;
+  document.getElementById('desktopRoomNumber').textContent = `ห้อง ${roomId}`;
+  document.getElementById('mobileRoomNumber').textContent = `ห้อง ${roomId}`;
+
+  // ... โค้ดเดิมของคุณต่อจากนี้ ...
+});
+
+document.addEventListener('DOMContentLoaded', () => {
 
   // Mock data
   const member = { username: 'user_a1', roomNumber: 'ห้อง A1' };

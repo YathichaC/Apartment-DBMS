@@ -1,80 +1,133 @@
-document.addEventListener('DOMContentLoaded', function () {
-  // Menu toggle
+// js/room.js
+document.addEventListener('DOMContentLoaded', () => {
+
   const menuBtn = document.getElementById('menuBtn');
-  if (menuBtn) {
-    menuBtn.addEventListener('click', function () {
-      const menu = document.getElementById('mobileMenu');
-      if (menu) menu.classList.toggle('hidden');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const roomGrid = document.getElementById('roomGrid');
+  const availableOnly = document.getElementById('available-only');
+  const loadingState = document.getElementById('loadingState');
+
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
     });
   }
 
-  // Load rooms state from localStorage
-  function syncRoomsState() {
-    const storedRooms = localStorage.getItem('apartment_rooms');
-    if (storedRooms) {
-      const roomsData = JSON.parse(storedRooms);
-      roomsData.forEach(room => {
-        const card = document.querySelector(`[data-room="${room.id}"]`);
-        if (card) {
-          const isFull = room.status === 'เต็ม';
-          card.setAttribute('data-status', isFull ? 'full' : 'available');
+  /* โหลดห้องจาก Database */
+  async function loadRooms(showOnlyAvailable = false) {
 
-          const priceP = card.querySelector('p');
-          if (priceP) priceP.textContent = `฿${room.price.toLocaleString()}/เดือน`;
+    roomGrid.innerHTML = '';
+    loadingState.classList.remove('hidden');
 
-          const statusSpan = card.querySelector('span');
-          if (statusSpan) {
-            if (isFull) {
-              statusSpan.className = 'bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold';
-              statusSpan.textContent = 'เต็ม';
-            } else {
-              statusSpan.className = 'bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold';
-              statusSpan.textContent = 'ว่าง';
-            }
-          }
+    try {
 
-          const btn = card.querySelector('button');
-          if (btn) {
-            if (isFull) {
-              btn.className = 'w-full mt-4 bg-gray-400 text-white py-2 rounded-lg font-semibold cursor-not-allowed';
-              btn.textContent = 'เต็มแล้ว';
-              btn.disabled = true;
-              btn.removeAttribute('onclick');
-            } else {
-              btn.className = 'w-full mt-4 bg-green-700 text-white hover:bg-green-800 py-2 rounded-lg font-semibold transition';
-              btn.textContent = 'ดูรายละเอียด';
-              btn.disabled = false;
-              btn.setAttribute('onclick', `goToDetail('${room.id}')`);
-            }
-          }
-        }
+      const response = await fetch('http://localhost:3000/api/rooms');
+
+      if (!response.ok)
+        throw new Error('โหลดห้องไม่สำเร็จ');
+
+      const rooms = await response.json();
+
+      let filteredRooms = rooms;
+
+      if (showOnlyAvailable) {
+        filteredRooms = rooms.filter(room =>
+          room.RSTATUS === 'AVAILABLE'
+        );
+      }
+
+      if (filteredRooms.length === 0) {
+        roomGrid.innerHTML =
+          '<p class="col-span-full text-center py-12 text-gray-600">ไม่พบห้อง</p>';
+        return;
+      }
+
+      filteredRooms.forEach(room => {
+
+        const isAvailable = room.RSTATUS === 'AVAILABLE';
+
+        const card = document.createElement('article');
+
+        card.className =
+          'bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition';
+
+        const imageUrl =
+          room.IMAGE_URL ||
+          'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400';
+
+        card.innerHTML = `
+          <figure>
+            <img src="${imageUrl}" 
+                 class="w-full h-48 object-cover">
+          </figure>
+
+          <div class="p-4">
+
+            <h3 class="text-xl font-bold mb-2">
+              ห้อง ${room.ROOMID}
+            </h3>
+
+            <div class="flex justify-between items-center mb-4">
+
+              <p class="text-green-700 font-bold text-lg">
+                ฿${Number(room.RPRICE).toLocaleString()}/เดือน
+              </p>
+
+              <span class="${isAvailable
+                ? 'bg-green-100 text-green-700'
+                : 'bg-red-100 text-red-700'} px-3 py-1 rounded-full text-sm">
+
+                ${isAvailable ? 'ว่าง' : 'เต็ม'}
+
+              </span>
+
+            </div>
+
+            <button
+              onclick="goToDetail('${room.ROOMID}')"
+              class="w-full bg-green-700 hover:bg-green-800 text-white py-2 rounded-lg">
+
+              ดูรายละเอียด
+
+            </button>
+
+          </div>
+        `;
+
+        roomGrid.appendChild(card);
+
       });
+
+    } catch (err) {
+
+      console.error(err);
+
+      roomGrid.innerHTML =
+        '<p class="text-red-600 text-center">โหลดข้อมูลไม่สำเร็จ</p>';
+
+    } finally {
+
+      loadingState.classList.add('hidden');
+
     }
   }
 
-  syncRoomsState();
+  loadRooms();
 
-  // Room page functions
-  function filterRooms() {
-    const checkbox = document.getElementById('available-only');
-    const roomCards = document.querySelectorAll('[data-room]');
+  if (availableOnly) {
 
-    roomCards.forEach(card => {
-      const status = card.getAttribute('data-status');
-      if (checkbox.checked && status !== 'available') {
-        card.style.display = 'none';
-      } else {
-        card.style.display = '';
-      }
+    availableOnly.addEventListener('change', () => {
+
+      loadRooms(availableOnly.checked);
+
     });
+
   }
 
-  const availCheckbox = document.getElementById('available-only');
-  if (availCheckbox) {
-    availCheckbox.addEventListener('change', filterRooms);
-  }
 });
 
+
+/* สำคัญมาก: ใช้ function นี้เพื่อไปหน้า detail */
 function goToDetail(roomId) {
   window.location.href = `detail.html?room=${roomId}`;
 }
