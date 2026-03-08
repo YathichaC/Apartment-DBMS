@@ -51,9 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
         card.className =
           'bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition';
 
-        const imageUrl =
-          room.IMAGE_URL ||
-          'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400';
+        let imageUrl = room.IMAGE_URL || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400';
+
+        const smallRooms = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4'];
+        const bedroomRooms = ['A5', 'B5'];
+
+        if (smallRooms.includes(room.ROOMID)) {
+          imageUrl = 'asset/img/small.jpg';
+        } else if (bedroomRooms.includes(room.ROOMID)) {
+          imageUrl = 'asset/img/bedroom.jpg';
+        }
 
         card.innerHTML = `
           <figure>
@@ -74,8 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
               </p>
 
               <span class="${isAvailable
-                ? 'bg-green-100 text-green-700'
-                : 'bg-red-100 text-red-700'} px-3 py-1 rounded-full text-sm">
+            ? 'bg-green-100 text-green-700'
+            : 'bg-red-100 text-red-700'} px-3 py-1 rounded-full text-sm">
 
                 ${isAvailable ? 'ว่าง' : 'เต็ม'}
 
