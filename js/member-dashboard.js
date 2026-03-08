@@ -325,6 +325,62 @@ const monthName = monthNames[parseInt(bill.BILLMONTH) - 1];
   return html;
 }
 
+// ────────────────────────────────────────────────
+// แสดงสลิปใน modal (สำหรับ member)
+// ────────────────────────────────────────────────
+// ────────────────────────────────────────────────
+// ฟังก์ชันดูไฟล์ใน modal (ใช้ร่วมกันทั้งสลิปและสัญญา)
+// ────────────────────────────────────────────────
+// ────────────────────────────────────────────────
+// แสดงสลิปใน modal สำหรับลูกบ้าน
+// ────────────────────────────────────────────────
+function showSlipModal(fileName) {
+  if (!fileName) {
+    alert("ไม่มีสลิปสำหรับรายการนี้");
+    return;
+  }
+
+  console.log("[SLIP DEBUG] กำลังแสดงสลิป:", fileName);
+
+  const titleEl = document.getElementById("slipModalTitle");
+  if (titleEl) titleEl.textContent = "สลิปการชำระเงิน";
+
+  const img = document.getElementById("slipImg");
+  if (img) {
+    img.src = `http://localhost:3000/uploads/slips/${fileName}`;
+    img.onerror = () => {
+      img.src = 'https://via.placeholder.com/400x600?text=ไม่พบสลิป';
+      console.warn("[SLIP ERROR] ไม่พบไฟล์:", fileName);
+    };
+  }
+
+  const modal = document.getElementById("slipModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  }
+}
+
+function closeSlipModal() {
+  const modal = document.getElementById("slipModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+}
+
+// ปิด modal เมื่อคลิกนอกภาพ
+document.addEventListener("click", (e) => {
+  const modal = document.getElementById("slipModal");
+  if (modal && modal.classList.contains("flex") && !e.target.closest(".bg-white")) {
+    closeSlipModal();
+  }
+});
+
+// ปุ่มปิด modal
+document.getElementById("closeSlip")?.addEventListener("click", closeSlipModal);// ────────────────────────────────────────────────
+// Render ประวัติการชำระเงิน (แก้ไขให้มีปุ่มดูสลิป)
+// ────────────────────────────────────────────────
 function renderHistory() {
   if (payments.length === 0) {
     return `
@@ -341,16 +397,33 @@ function renderHistory() {
   `;
 
   payments.forEach(p => {
+    const payDate = new Date(p.PAYDATE).toLocaleDateString("th-TH");
+    const amount = Number(p.PAYAMOUNT).toLocaleString();
+    const status = p.PAYSTATUS || "ไม่ระบุ";
+    const room = p.ROOMID || "-";
+    const fileName = p.PAYFILES;
+
     html += `
       <div class="bg-white p-6 rounded-xl shadow border">
-        <div class="flex justify-between">
+        <div class="flex justify-between items-start">
           <div>
-            <p class="font-bold">${new Date(p.PAYDATE).toLocaleDateString("th-TH")}</p>
-            <p class="text-gray-500">฿${Number(p.PAYAMOUNT).toLocaleString()}</p>
+            <p class="font-bold">${payDate}</p>
+            <p class="text-gray-500">฿${amount}</p>
+            <p class="text-sm text-gray-600">ห้อง ${room}</p>
           </div>
-          <div class="text-green-600 font-bold">${p.PAYSTATUS}</div>
+          <div class="text-right">
+            <div class="text-green-600 font-bold">${status}</div>
+            ${
+              fileName
+                ? `<button 
+                     onclick="showSlipModal('${fileName}')" 
+                     class="mt-2 px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                     ดูสลิป
+                   </button>`
+                : `<span class="text-gray-400 text-sm">ไม่มีสลิป</span>`
+            }
+          </div>
         </div>
-        ${p.PAYFILES ? `<a href="/uploads/${p.PAYFILES}" target="_blank" class="text-blue-600 underline">ดูสลิป</a>` : ""}
       </div>
     `;
   });

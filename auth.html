@@ -1,230 +1,237 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>บ้านกฤติญา - เข้าสู่ระบบ</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      * {
-        font-family: 'Prompt', sans-serif;
-      }
-      html, body {
-        height: 100%;
-      }
-      body {
-        display: flex;
-        flex-direction: column;
-      }
-      main {
-        flex: 1;
-      }
-      .tab-content {
-        display: none;
-      }
-      .tab-content.active {
-        display: block;
-      }
-      .tab-btn {
-        cursor: pointer;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        background: #e5e7eb;
-        font-weight: 500;
-        transition: all 0.3s;
-      }
-      .tab-btn.active {
-        background-color: #2E7D32;
-        color: white;
-      }
-      .tab-btn:hover {
-        background-color: #1f4620;
-        color: white;
-      }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <a href="index.html" class="flex items-center gap-2">
-            <span class="text-xl font-semibold text-gray-900">บ้านกฤติญา</span>
-          </a>
-
-          <nav class="hidden md:flex items-center gap-6">
-            <a href="index.html" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
-            <a href="room.html" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
-            <a href="auth.html" class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">เข้าสู่ระบบ</a>
-          </nav>
-
-          <button id="menuBtn" class="md:hidden p-2">
-            <span class="text-2xl">☰</span>
-          </button>
-        </div>
-
-        <nav id="mobileMenu" class="md:hidden py-4 border-t border-gray-200 hidden">
-          <div class="flex flex-col gap-4">
-            <a href="index.html" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
-            <a href="room.html" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
-            <a href="auth.html" class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition w-full text-center">เข้าสู่ระบบ</a>
-          </div>
-        </nav>
-      </div>
-    </header>
-
-    <main>
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div class="hidden lg:block">
-            <div class="rounded-2xl h-96 md:h-[600px] bg-cover bg-center relative" style="background-image: linear-gradient(rgba(46, 125, 50, 0.8), rgba(46, 125, 50, 0.8)), url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600');">
-              <div class="absolute inset-0 flex flex-col justify-center items-center text-white p-12">
-                <h2 class="text-2xl md:text-4xl font-bold mb-4 text-center">ยินดีต้อนรับสู่บ้านกฤติญา</h2>
-                <p class="text-base md:text-lg text-center opacity-90 mb-8">
-                  เข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านของคุณ
-                </p>
-                <ul class="space-y-3 text-left text-sm md:text-base">
-                  <li class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      ✓
-                    </div>
-                    <span>เช็คค่าน้ำ-ค่าไฟ</span>
-                  </li>
-                  <li class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      ✓
-                    </div>
-                    <span>ชำระเงินออนไลน์</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="w-full">
-              <div id="login" class="tab-content active">
-                <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-200">
-                  <h2 class="text-2xl font-bold mb-2">ยินดีต้อนรับกลับ</h2>
-                  <p class="text-gray-600 mb-6">
-                    เข้าสู่ระบบเพื่อจัดการการชำระรายเดือนของคุณ
-                  </p>
-
-                  <form id="loginForm" class="space-y-6">
-  <div>
-    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">ชื่อผู้ใช้</label>
-    <input 
-      id="username" 
-      type="text" 
-      required 
-      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
-      placeholder="เช่น user_a3"
-    />
-  </div>
-
-  <div>
-    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">รหัสผ่าน</label>
-    <input 
-      id="password" 
-      type="password" 
-      required 
-      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
-      placeholder="••••••••"
-    />
-  </div>
-
-  <button 
-    type="submit"
-    class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-3 rounded-lg transition"
-  >
-    เข้าสู่ระบบ
-  </button>
-</form>
-
-<p id="errorMsg" class="text-red-600 text-center mt-4 hidden"></p>
-                </div>
-              </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <footer class="bg-green-700 text-white py-8 mt-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center">
-          <p class="mb-2">© 2026 บ้านกฤติญา - ระบบจองห้องพัก</p>
-          <p class="text-white">ติดต่อเรา: 062-108-8868</p>
-        </div>
-      </div>
-    </footer>
-
-   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const menuBtn = document.getElementById('menuBtn');
-    if (menuBtn) {
-      menuBtn.addEventListener('click', () => {
-        const mobileMenu = document.getElementById('mobileMenu');
-        if (mobileMenu) mobileMenu.classList.toggle('hidden');
-      });
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บ้านกฤติญา - เข้าสู่ระบบ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      font-family: 'Prompt', sans-serif;
     }
 
-    const loginForm = document.getElementById('loginForm');
-    if (!loginForm) return;
+    html,
+    body {
+      height: 100%;
+    }
 
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    body {
+      display: flex;
+      flex-direction: column;
+    }
 
-      const username = document.getElementById('username')?.value?.trim();
-      const password = document.getElementById('password')?.value?.trim();
+    main {
+      flex: 1;
+    }
 
-      if (!username || !password) {
-        alert('กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบ');
-        return;
-      }
+    .tab-content {
+      display: none;
+    }
 
-      try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
+    .tab-content.active {
+      display: block;
+    }
+
+    .tab-btn {
+      cursor: pointer;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      background: #e5e7eb;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .tab-btn.active {
+      background-color: #2E7D32;
+      color: white;
+    }
+
+    .tab-btn:hover {
+      background-color: #1f4620;
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="index.html" class="flex items-center gap-2">
+          <span class="text-xl font-semibold text-gray-900">บ้านกฤติญา</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="index.html" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
+          <a href="room.html" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
+          <a href="auth.html"
+            class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">เข้าสู่ระบบ</a>
+        </nav>
+
+        <button id="menuBtn" class="md:hidden p-2">
+          <span class="text-2xl">☰</span>
+        </button>
+      </div>
+
+      <nav id="mobileMenu" class="md:hidden py-4 border-t border-gray-200 hidden">
+        <div class="flex flex-col gap-4">
+          <a href="index.html" class="transition-colors" style="color: #2E7D32;">หน้าแรก</a>
+          <a href="room.html" class="transition-colors" style="color: #2E7D32;">ห้องพัก</a>
+          <a href="auth.html"
+            class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition w-full text-center">เข้าสู่ระบบ</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="hidden lg:block">
+          <div class="rounded-2xl h-96 md:h-[600px] bg-cover bg-center relative"
+            style="background-image: linear-gradient(rgba(46, 125, 50, 0.8), rgba(46, 125, 50, 0.8)), url('asset/img/apartment_front.jpg');">
+            <div class="absolute inset-0 flex flex-col justify-center items-center text-white p-12">
+              <h2 class="text-2xl md:text-4xl font-bold mb-4 text-center">ยินดีต้อนรับสู่บ้านกฤติญา</h2>
+              <p class="text-base md:text-lg text-center opacity-90 mb-8">
+                เข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านของคุณ
+              </p>
+              <ul class="space-y-3 text-left text-sm md:text-base">
+                <li class="flex items-center gap-3">
+                  <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    ✓
+                  </div>
+                  <span>เช็คค่าน้ำ-ค่าไฟ</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    ✓
+                  </div>
+                  <span>ชำระเงินออนไลน์</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="w-full">
+            <div id="login" class="tab-content active">
+              <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-bold mb-2">ยินดีต้อนรับกลับ</h2>
+                <p class="text-gray-600 mb-6">
+                  เข้าสู่ระบบเพื่อจัดการการชำระรายเดือนของคุณ
+                </p>
+
+                <form id="loginForm" class="space-y-6">
+                  <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">ชื่อผู้ใช้</label>
+                    <input id="username" type="text" required
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                      placeholder="เช่น user_a3" />
+                  </div>
+
+                  <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">รหัสผ่าน</label>
+                    <input id="password" type="password" required
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
+                      placeholder="••••••••" />
+                  </div>
+
+                  <button type="submit"
+                    class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-3 rounded-lg transition">
+                    เข้าสู่ระบบ
+                  </button>
+                </form>
+
+                <p id="errorMsg" class="text-red-600 text-center mt-4 hidden"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </main>
+
+  <footer class="bg-green-700 text-white py-8 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <p class="mb-2">© 2026 บ้านกฤติญา - ระบบจองห้องพัก</p>
+        <p class="text-white">ติดต่อเรา: 062-108-8868</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuBtn = document.getElementById('menuBtn');
+      if (menuBtn) {
+        menuBtn.addEventListener('click', () => {
+          const mobileMenu = document.getElementById('mobileMenu');
+          if (mobileMenu) mobileMenu.classList.toggle('hidden');
         });
-
-        const data = await response.json();
-
-        if (!response.ok || !data.success) {
-          throw new Error(data.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-        }
-
-        // แยก redirect ตาม role
-        if (data.role === 'admin') {
-          localStorage.setItem('adminUsername', data.username);
-          localStorage.setItem('userRole', 'admin');
-          alert('เข้าสู่ระบบสำเร็จ! กำลังไปหน้าแอดมิน...');
-          window.location.href = 'admin-dashboard.html';
-
-        } else if (data.role === 'tenant') {
-          localStorage.setItem('tenantUsername', data.username);
-          localStorage.setItem('tenantRoomId', data.roomId);
-          localStorage.setItem('tenantAccId', data.accId);
-          localStorage.setItem('userRole', 'tenant');
-          alert('เข้าสู่ระบบสำเร็จ! กำลังไปหน้าแดชบอร์ด...');
-          window.location.href = 'member-dashboard.html';
-
-        } else {
-          throw new Error('ไม่รู้จัก role ของผู้ใช้');
-        }
-
-      } catch (err) {
-        alert('เกิดข้อผิดพลาด: ' + err.message);
-        console.error('Login failed:', err);
       }
+
+      const loginForm = document.getElementById('loginForm');
+      if (!loginForm) return;
+
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('username')?.value?.trim();
+        const password = document.getElementById('password')?.value?.trim();
+
+        if (!username || !password) {
+          alert('กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบ');
+          return;
+        }
+
+        try {
+          const response = await fetch('http://localhost:3000/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok || !data.success) {
+            throw new Error(data.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+          }
+
+          // แยก redirect ตาม role
+          if (data.role === 'admin') {
+            localStorage.setItem('adminUsername', data.username);
+            localStorage.setItem('userRole', 'admin');
+            alert('เข้าสู่ระบบสำเร็จ! กำลังไปหน้าแอดมิน...');
+            window.location.href = 'admin-dashboard.html';
+
+          } else if (data.role === 'tenant') {
+            localStorage.setItem('tenantUsername', data.username);
+            localStorage.setItem('tenantRoomId', data.roomId);
+            localStorage.setItem('tenantAccId', data.accId);
+            localStorage.setItem('userRole', 'tenant');
+            alert('เข้าสู่ระบบสำเร็จ! กำลังไปหน้าแดชบอร์ด...');
+            window.location.href = 'member-dashboard.html';
+
+          } else {
+            throw new Error('ไม่รู้จัก role ของผู้ใช้');
+          }
+
+        } catch (err) {
+          alert('เกิดข้อผิดพลาด: ' + err.message);
+          console.error('Login failed:', err);
+        }
+      });
     });
-  });
-</script>
+  </script>
 </body>
+
 </html>

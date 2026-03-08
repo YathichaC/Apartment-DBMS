@@ -10,47 +10,78 @@ exports.createBooking = async (req, res) => {
     const { roomId, fullName, phone, email } = req.body;
     const slipFile = req.file;
 
+    console.log("[DEBUG] req.body:", req.body);
+    console.log("[DEBUG] req.file:", req.file);
+
     if (!roomId || !fullName || !phone || !email || !slipFile) {
       return res.status(400).json({ success: false, message: "กรุณากรอกข้อมูลและอัปโหลดสลิป" });
     }
 
-    conn = await db.getConnection();
-    const slipName = slipFile.filename;
+    // แก้จุดนี้: ใช้ filename ถ้ามี ถ้าไม่มีให้สร้างเอง
+    const fileName = slipFile.filename || `${Date.now()}-${slipFile.originalname}`;
 
-    // 1. Create Booker
+    console.log("[DEBUG] ชื่อไฟล์ที่ใช้บันทึก:", fileName);
+
+    conn = await db.getConnection();
+
+    // 1. สร้าง Booker
     const bookerResult = await conn.execute(
       `INSERT INTO Booker (BookerID, BName, BPhone, BEmail)
        VALUES (Booker_SEQ.NEXTVAL, :bname, :bphone, :bemail)
        RETURNING BookerID INTO :outBookerId`,
-      { bname: fullName, bphone: phone, bemail: email, outBookerId: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER } }
+      {
+        bname: fullName,
+        bphone: phone,
+        bemail: email,
+        outBookerId: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+      }
     );
     const bookerId = bookerResult.outBinds.outBookerId[0];
 
-    // 2. Create Booking
+    // 2. สร้าง Booking
     const bookingResult = await conn.execute(
       `INSERT INTO Booking (BookingID, BKStatus, BKDate, BookerID, RoomID)
        VALUES (Booking_SEQ.NEXTVAL, 'WAITING_VERIFY', SYSDATE, :bookerId, :roomId)
        RETURNING BookingID INTO :outBookingId`,
-      { bookerId, roomId, outBookingId: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER } }
+      {
+        bookerId,
+        roomId,
+        outBookingId: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+      }
     );
     const bookingId = bookingResult.outBinds.outBookingId[0];
 
-    // 3. Create Payment
+    // 3. สร้าง Payment (บันทึกชื่อไฟล์จริง)
     await conn.execute(
-      `INSERT INTO Payment (PayID, BILLID, PayStatus, PayDate, PayFiles, PayAmount, BookingID, BookerID, RoomID)
-       VALUES (Payment_SEQ.NEXTVAL, Bill_SEQ.NEXTVAL, 'WAITING_VERIFY', SYSDATE, :slip, 5500, :bookingId, :bookerId, :roomId)`,
-      { slip: slipFile.filename, bookingId, bookerId, roomId }
+      `INSERT INTO Payment
+         (PayID, BillID, PayStatus, PayDate, PayFiles, PayAmount, BookingID, BookerID, RoomID, PayType)
+       VALUES
+         (Payment_SEQ.NEXTVAL, NULL, 'WAITING_VERIFY', SYSDATE, :payFiles, 5500, :bookingId, :bookerId, :roomId, 'DEPOSIT')`,
+      {
+        payFiles: fileName,  // ใช้ fileName ที่สร้างไว้
+        bookingId,
+        bookerId,
+        roomId
+      }
     );
 
     await conn.commit();
-    res.json({ success: true, bookingId });
+
+    console.log("[SUCCESS] บันทึกการจองสำเร็จ");
+    console.log(" - BookerID:", bookerId);
+    console.log(" - BookingID:", bookingId);
+    console.log(" - PAYFILES:", fileName);
+
+    res.json({ success: true, bookingId, message: "จองสำเร็จ รอตรวจสอบสลิป" });
+
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: err.message });
+    console.error("[ERROR] createBooking:", err);
+    res.status(500).json({ success: false, message: err.message || "เกิดข้อผิดพลาดในการจอง" });
   } finally {
     if (conn) await conn.close();
   }
 };
+
 
 // ==========================
 // GET ALL BOOKINGS (เฉพาะ WAITING_VERIFY) ← แก้ตรงนี้
@@ -62,17 +93,20 @@ exports.getAllBookings = async (req, res) => {
 
     const result = await conn.execute(
       `SELECT 
-         b.BookingID, 
-         b.BKStatus, 
-         b.BKDate, 
-         b.RoomID, 
-         bk.BName AS BNAME, 
-         bk.BPhone AS BPHONE, 
-         bk.BEmail AS BEMAIL
-       FROM Booking b
-       JOIN Booker bk ON b.BookerID = bk.BookerID
-       WHERE b.BKStatus = 'WAITING_VERIFY'
-       ORDER BY b.BookingID DESC`,
+  b.BookingID,
+  b.BKStatus,
+  b.BKDate,
+  b.RoomID,
+  p.PayID,
+  p.PayFiles,
+  bk.BName AS BNAME,
+  bk.BPhone AS BPHONE,
+  bk.BEmail AS BEMAIL
+FROM Booking b
+JOIN Booker bk ON b.BookerID = bk.BookerID
+LEFT JOIN Payment p ON p.BookingID = b.BookingID
+WHERE b.BKStatus IN ('WAITING_VERIFY','APPROVED')
+ORDER BY b.BookingID DESC`,
       [],
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );

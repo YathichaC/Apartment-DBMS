@@ -33,25 +33,46 @@ document.addEventListener('DOMContentLoaded', function () {
   // ────────────────────────────────────────────────
   async function loadAndRenderRooms() {
     try {
-      const res = await fetch(`${API_BASE}/rooms`);
-      if (!res.ok) throw new Error('โหลดห้องไม่สำเร็จ');
-      rooms = await res.json();
+      const [roomsRes, bookingsRes] = await Promise.all([
+        fetch(`${API_BASE}/rooms`),
+        fetch(`${API_BASE}/bookings`)
+      ]);
+      if (!roomsRes.ok) throw new Error('โหลดห้องไม่สำเร็จ');
+      rooms = await roomsRes.json();
+
+      // นับคำจองที่รออยู่แต่ละห้อง
+      const allBookings = bookingsRes.ok ? await bookingsRes.json() : [];
+      const pendingCountMap = {};
+      allBookings.forEach(b => {
+        if (b.BKSTATUS === 'WAITING_VERIFY') {
+          pendingCountMap[b.ROOMID] = (pendingCountMap[b.ROOMID] || 0) + 1;
+        }
+      });
 
       const tbody = document.getElementById('roomsTable');
       if (tbody) {
         tbody.innerHTML = '';
         rooms.forEach(room => {
           const isAvailable = room.RSTATUS === 'AVAILABLE';
-          const statusText = isAvailable ? 'ว่าง' : 'เต็ม';
+          const statusText  = isAvailable ? 'ว่าง' : 'เต็ม';
           const statusColor = isAvailable ? 'text-green-600' : 'text-red-600';
-          const toggleBg = isAvailable ? 'bg-green-500' : 'bg-red-500';
-          const dotPos = isAvailable ? '' : 'translate-x-5';
+          const toggleBg    = isAvailable ? 'bg-green-500' : 'bg-red-500';
+          const dotPos      = isAvailable ? '' : 'translate-x-5';
+
+          // หมายเหตุ: แสดงจำนวนคำขอจองที่รออยู่
+          const pendingCount = pendingCountMap[room.ROOMID] || 0;
+          const remarkHtml   = pendingCount > 0
+            ? `<span class="inline-flex items-center gap-1 text-base font-medium text-yellow-800 bg-yellow-400 px-5 py-2 rounded-full">
+                 ⚠ มีคำขอจอง ${pendingCount} รายการ
+               </span>`
+            : `<span class="text-gray-500 text-2xl">-</span>`;
 
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td class="px-4 py-2 font-medium">${room.ROOMID}</td>
             <td class="px-4 py-2 ${statusColor}">${statusText}</td>
             <td class="px-4 py-2">฿${Number(room.RPRICE).toLocaleString()}</td>
+            <td class="px-4 py-2">${remarkHtml}</td>
             <td class="px-4 py-2 text-center">
               <label class="inline-flex items-center cursor-pointer">
                 <input type="checkbox" data-room="${room.ROOMID}" class="toggle-switch sr-only" ${isAvailable ? 'checked' : ''} />
@@ -175,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
         email: row.BEMAIL,
         status: row.BKSTATUS,
         requestDate: row.BKDATE,
-        slip: `${API_BASE}/payments/slip/${row.PAYID}`
+        slip: row.PAYFILES
       }));
 
       renderRequests();
@@ -226,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const action = r.status === 'WAITING_VERIFY'
         ? `<button data-slip="${r.slip}" class="view-slip px-4 py-2 bg-green-50 text-green-700 rounded text-sm hover:bg-green-100">ดูสลิป</button>`
-        : `<span class="text-green-600 font-medium">ยืนยันแล้ว</span>`;
+        : `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">✓ อนุมัติแล้ว</span>`;
 
       div.innerHTML = `
         <div class="flex items-start justify-between">
@@ -249,34 +270,56 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ────────────────────────────────────────────────
-  // Slip Modal
-  // ────────────────────────────────────────────────
-  function showSlipModal(file){
+
+
+
+
+window.showSlipModal = function(fileName, title = "ตรวจสอบสลิปการชำระเงิน") {
+
+  if (!fileName) {
+    alert("ไม่มีสลิปสำหรับรายการนี้");
+    return;
+  }
+
+  const titleEl = document.getElementById("slipModalTitle");
+  if (titleEl) titleEl.textContent = title;
 
   const img = document.getElementById("slipImg");
 
-  img.src = `${API_BASE}/uploads/${file}`;
+  if (img) {
+    img.src = `http://localhost:3000/uploads/slips/${fileName}`;
 
-  document.getElementById("slipModal").classList.remove("hidden");
-
-}
-
-  function closeSlipModal() {
-    const modal = document.getElementById('slipModal');
-    if (modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
+    img.onerror = () => {
+      img.src = 'https://via.placeholder.com/400x600?text=ไม่พบสลิป';
+    };
   }
 
-  document.addEventListener('click', e => {
-    if (e.target.id === 'slipModal') closeSlipModal();
-  });
-  document.getElementById('closeSlip')?.addEventListener('click', closeSlipModal);
+  const modal = document.getElementById("slipModal");
 
-  // ────────────────────────────────────────────────
-  // Page Switching + Mobile Sidebar
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  }
+}
+
+function closeSlipModal() {
+  const modal = document.getElementById("slipModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+}
+
+// ปิด modal เมื่อคลิกนอกภาพ
+document.addEventListener("click", (e) => {
+  const modal = document.getElementById("slipModal");
+  if (modal && modal.classList.contains("flex") && !e.target.closest(".bg-white")) {
+    closeSlipModal();
+  }
+});
+
+// ปุ่มปิด modal
+document.getElementById("closeSlip")?.addEventListener("click", closeSlipModal);// Page Switching + Mobile Sidebar
   // ────────────────────────────────────────────────
   const pageBtns = document.querySelectorAll('.page-btn');
   const views = document.querySelectorAll('.page-view');
@@ -336,10 +379,10 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.target === mobileSidebar) closeMobileSidebar();
   });
 
-  // ────────────────────────────────────────────────
-  // Bills Section (mock data)
-  // ────────────────────────────────────────────────
-  function getMonthName(month) {
+// ────────────────────────────────────────────────
+// Bills Section
+// ────────────────────────────────────────────────
+function getMonthName(month) {
   const months = [
     "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน",
     "พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม",
@@ -347,69 +390,86 @@ document.addEventListener('DOMContentLoaded', function () {
   ];
   return months[month - 1] || month;
 }
- async function loadBillsFromAPI() {
+
+async function loadBillsFromAPI() {
   const res = await fetch("http://localhost:3000/api/bills");
   const data = await res.json();
 
   if (data.success) {
+    bills = data.data.map(b => {
+      // แก้ไขจุดสำคัญ: ทำให้ id และ billId เป็น number เสมอ + fallback ทุกทาง
+      const billIdValue = b.BILLID || b.billId || b.billid || null;
+      const parsedId = billIdValue ? Number(billIdValue) : null;
 
-    bills = data.data.map(b => ({
+      if (parsedId === null || isNaN(parsedId)) {
+        console.warn("[WARNING] บิลนี้ไม่มี BILLID ที่ถูกต้อง:", b);
+      }
 
-      // ใช้ใน admin
-      id: b.billId,
-      room: b.roomId,
-      total: b.totalAmount,
+      return {
+        id: parsedId,                    // ใช้เป็นหลักสำหรับ data-id
+        billId: parsedId,
+        room: b.ROOMID || b.roomId,
+        total: Number(b.TOTALAMOUNT || b.totalAmount || 0),
+        roomId: b.ROOMID || b.roomId,
+        totalAmount: Number(b.TOTALAMOUNT || b.totalAmount || 0),
+        waterUnit: Number(b.WATERUNIT || b.waterUnit || 0),
+        electricUnit: Number(b.ELECTRICUNIT || b.electricUnit || 0),
+        waterCost: Number(b.WATERCOST || b.waterCost || 0),
+        elecCost: Number(b.ELECTRICCOST || b.electricCost || 0) * Number(b.ELECTRICUNIT || b.electricUnit || 0),
+        roomPrice: Number(b.TOTALAMOUNT || b.totalAmount || 0) -
+                   (Number(b.WATERCOST || b.waterCost || 0) * Number(b.WATERUNIT || b.waterUnit || 0)) -
+                   (Number(b.ELECTRICCOST || b.electricCost || 0) * Number(b.ELECTRICUNIT || b.electricUnit || 0)),
+        month: b.BILLMONTH || b.billMonth,
+        year: b.BILLYEAR || b.billYear
+      };
+    });
 
-      // ใช้ใน member payment
-      billId: b.billId,
-      roomId: b.roomId,
-      totalAmount: b.totalAmount,
-
-      // รายละเอียด
-      waterUnit: b.waterUnit,
-      electricUnit: b.electricUnit,
-
-      waterCost: b.waterCost * b.waterUnit,
-      elecCost: b.electricCost * b.electricUnit,
-
-      roomPrice: b.totalAmount -
-        (b.waterCost * b.waterUnit) -
-        (b.electricCost * b.electricUnit),
-
-      month: b.BILLMONTH,
-      year: b.BILLYEAR
-
-    }));
+    console.log("[DEBUG] bills ที่โหลดมา:", bills.map(b => ({ id: b.id, billId: b.billId, room: b.room })));
 
     renderBills();
   }
 }
-function renderBills() {
-    const container = document.getElementById('billsList');
-    if (!container) return;
-    container.innerHTML = '';
-    bills.forEach(b => {
-      const div = document.createElement('div');
-      div.className = 'bg-white p-4 rounded shadow flex items-center justify-between';
-      div.innerHTML = `
-        <div>
-          <div class="font-medium text-lg text-gray-800">ห้อง ${b.room}</div>
-         <div class="text-sm text-gray-500">${getMonthName(b.month)} ${b.year}</div>
-          <div class="text-sm mt-1">ราคา: <span class="text-green-600 font-medium">฿${b.total.toLocaleString()}</span></div>
-        </div>
-        <div class="flex items-center gap-2">
-          <button data-id="${b.id}" class="view-bill px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded text-sm font-medium transition-colors">รายละเอียด</button>
-          <button data-id="${b.id}" class="edit-bill px-3 py-1.5 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded text-sm font-medium transition-colors">แก้ไข</button>
-          <button data-id="${b.id}" class="delete-bill px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded text-sm font-medium transition-colors">ลบ</button>
-        </div>
-      `;
-      container.appendChild(div);
-    });
 
-    container.querySelectorAll('.view-bill').forEach(btn => btn.addEventListener('click', () => showBillDetails(parseInt(btn.dataset.id))));
-    container.querySelectorAll('.edit-bill').forEach(btn => btn.addEventListener('click', () => openEditBill(parseInt(btn.dataset.id))));
-    container.querySelectorAll('.delete-bill').forEach(btn => btn.addEventListener('click', () => deleteBill(parseInt(btn.dataset.id))));
-  }
+function renderBills() {
+  const container = document.getElementById('billsList');
+  if (!container) return;
+  container.innerHTML = '';
+
+  bills.forEach(b => {
+    const div = document.createElement('div');
+    div.className = 'bg-white p-4 rounded shadow flex items-center justify-between';
+
+    // แก้ไข: ใช้ b.id เป็นหลัก แต่ fallback ไป billId ถ้า id เป็น null
+    const editId = b.id || b.billId || '';
+
+    div.innerHTML = `
+      <div>
+        <div class="font-medium text-lg text-gray-800">ห้อง ${b.room}</div>
+        <div class="text-sm text-gray-500">${getMonthName(b.month)} ${b.year}</div>
+        <div class="text-sm mt-1">ราคา: <span class="text-green-600 font-medium">฿${b.total.toLocaleString()}</span></div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button data-id="${b.id}" class="view-bill px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded text-sm font-medium transition-colors">รายละเอียด</button>
+        <button data-id="${editId}" class="edit-bill px-3 py-1.5 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded text-sm font-medium transition-colors">แก้ไข</button>
+        <button data-id="${b.id}" class="delete-bill px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded text-sm font-medium transition-colors">ลบ</button>
+      </div>
+    `;
+    container.appendChild(div);
+
+    // log เพื่อเช็ค data-id จริง ๆ
+    console.log("[DEBUG] สร้าง button แก้ไข สำหรับห้อง", b.room, "data-id:", editId);
+  });
+
+  container.querySelectorAll('.view-bill').forEach(btn => 
+    btn.addEventListener('click', () => showBillDetails(parseInt(btn.dataset.id)))
+  );
+  container.querySelectorAll('.edit-bill').forEach(btn => 
+    btn.addEventListener('click', () => openEditBill(parseInt(btn.dataset.id)))
+  );
+  container.querySelectorAll('.delete-bill').forEach(btn => 
+    btn.addEventListener('click', () => deleteBill(parseInt(btn.dataset.id)))
+  );
+}
 
   
   const billModal = document.getElementById('billModal');
@@ -500,13 +560,29 @@ function renderBills() {
   calcTotalCost.textContent = `฿${total}`;
 }
 
-  billForm?.addEventListener('submit', async (e) => {
+ billForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
-const billMonth = document.getElementById('billMonth').value;
-const billYear = document.getElementById('billYear').value;
-  const roomId = billRoomSel.value;
-  const room = rooms.find(r => r.ROOMID === roomId);
-  if (!room) return;
+
+  // ดึง billId จาก input และ trim ให้สะอาด
+  const billIdInput = document.getElementById('billId').value?.trim() || '';
+  const billId = billIdInput ? Number(billIdInput) : null;
+
+  console.log("[DEBUG] submit form - billId จาก input:", billIdInput, "parsed เป็น:", billId);
+
+  if (billId && isNaN(billId)) {
+    alert("BILLID ไม่ถูกต้อง (ต้องเป็นตัวเลข)");
+    return;
+  }
+
+  const billMonth = document.getElementById('billMonth').value;
+  const billYear = document.getElementById('billYear').value;
+  const roomId = billRoomSel.value?.trim();
+
+  // ตรวจข้อมูลไม่ครบ
+  if (!roomId || !billMonth || !billYear) {
+    alert("ข้อมูลไม่ครบถ้วน กรุณาเลือกห้องและเดือน/ปี");
+    return;
+  }
 
   const prevW = parseFloat(document.getElementById('prevWater').value) || 0;
   const currW = parseFloat(document.getElementById('currWater').value) || 0;
@@ -519,45 +595,50 @@ const billYear = document.getElementById('billYear').value;
   const waterCost = 25;
   const electricCost = 7;
 
+  // สร้าง URL ให้ชัวร์
+  const url = billId 
+    ? `http://localhost:3000/api/bills/${billId}` 
+    : `http://localhost:3000/api/bills`;
+
+  const method = billId ? "PUT" : "POST";
+
+  console.log("[DEBUG] ส่ง request:", method, url);
+
   try {
-    const res = await fetch("http://localhost:3000/api/bills", {
-      method: "POST",
+    const res = await fetch(url, {
+      method: method,
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-  roomId,
-  waterUnit: usedW,
-  electricUnit: usedE,
-  waterCost,
-  electricCost,
-  billMonth,
-  billYear
-})
+        roomId,
+        waterUnit: usedW,
+        electricUnit: usedE,
+        waterCost,
+        electricCost,
+        billMonth,
+        billYear
+      })
     });
 
     const data = await res.json();
 
     if (data.success) {
-      alert("สร้างบิลสำเร็จ");
-
-      // รีโหลดจาก API ใหม่
+      alert(billId ? "แก้ไขบิลสำเร็จ" : "สร้างบิลสำเร็จ");
       await loadBillsFromAPI();
-
       closeBillModal();
     } else {
-      alert("สร้างบิลไม่สำเร็จ: " + data.message);
+      alert("บันทึกไม่สำเร็จ: " + (data.message || "ไม่ทราบสาเหตุ"));
     }
-
   } catch (err) {
-    console.error(err);
-    alert("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+    console.error("[ERROR] submit error:", err);
+    alert("เกิดข้อผิดพลาด: " + err.message);
   }
 });
 
 
   async function deleteBill(id) {
-  if (!confirm('คุณต้องการลบบิลนี้ใช่หรือไม่?')) return;
+  if (!confirm('คุณต้องการลบบิลนี้ใช่หรือไม่? (บิลจะถูกซ่อน แต่ยังอยู่ในระบบ)')) return;
 
   try {
     const res = await fetch(`http://localhost:3000/api/bills/${id}`, {
@@ -567,7 +648,7 @@ const billYear = document.getElementById('billYear').value;
     const data = await res.json();
 
     if (data.success) {
-      alert("ลบบิลสำเร็จ");
+      alert("ลบบิลสำเร็จ (ซ่อนจากรายการแล้ว)");
       await loadBillsFromAPI();
     } else {
       alert("ลบไม่สำเร็จ: " + data.message);
@@ -578,31 +659,66 @@ const billYear = document.getElementById('billYear').value;
     alert("เกิดข้อผิดพลาด");
   }
 }
+function openEditBill(id) {
+  console.log("[DEBUG] openEditBill ถูกเรียกด้วย id:", id, "typeof:", typeof id);
 
-  function openEditBill(id) {
+  const numericId = Number(id);
+  if (isNaN(numericId) || numericId <= 0) {
+    console.error("[DEBUG] id ไม่ใช่ตัวเลขที่ถูกต้อง:", id);
+    alert("ไม่สามารถแก้ไขได้: BILLID ไม่ถูกต้อง (กรุณารีเฟรชหน้า)");
+    return;
+  }
 
-  const b = bills.find(x => x.id === id);
-  if (!b) return;
+  const b = bills.find(x => 
+    x.id === numericId || 
+    x.billId === numericId || 
+    Number(x.billId) === numericId || 
+    Number(x.id) === numericId
+  );
+
+  if (!b) {
+    console.error("[DEBUG] ไม่พบบิลใน array bills ด้วย id:", numericId);
+    console.log("รายการ bills ทั้งหมด:", bills.map(x => ({ id: x.id, billId: x.billId, room: x.room })));
+    alert("ไม่พบบิลนี้ในรายการ กรุณารีเฟรชหน้าแล้วลองใหม่");
+    return;
+  }
+
+  console.log("[DEBUG] พบบิล:", b);
 
   populateRoomOptions();
-
   billForm.reset();
 
   document.getElementById('billModalTitle').textContent = 'แก้ไขบิล';
 
-  document.getElementById('billId').value = b.id;
+  const realBillId = b.billId || b.id || b.BILLID || '';
+  document.getElementById('billId').value = realBillId;
 
-  billRoomSel.value = b.room;
+  console.log("[DEBUG] set billId ใน form เป็น:", realBillId);
 
-  document.getElementById('billMonth').value = b.month;
-  document.getElementById('billYear').value = b.year;
+  billRoomSel.value = b.room || b.roomId;
 
-  // ใช้ unit เดิมแทน
+  const monthMap = {
+    "มกราคม": 1, "กุมภาพันธ์": 2, "มีนาคม": 3, "เมษายน": 4,
+    "พฤษภาคม": 5, "มิถุนายน": 6, "กรกฎาคม": 7, "สิงหาคม": 8,
+    "กันยายน": 9, "ตุลาคม": 10, "พฤศจิกายน": 11, "ธันวาคม": 12
+  };
+
+  let monthValue = b.month || b.BILLMONTH;
+
+  if (typeof monthValue === "string" && isNaN(monthValue)) {
+    monthValue = monthMap[monthValue.trim()];
+  }
+
+  monthValue = Number(monthValue) || 1;
+  document.getElementById('billMonth').value = monthValue;
+
+  document.getElementById('billYear').value = b.year || b.BILLYEAR || new Date().getFullYear();
+
+  // meter
   document.getElementById('prevWater').value = 0;
-  document.getElementById('currWater').value = b.waterUnit;
-
+  document.getElementById('currWater').value = b.waterUnit || 0;
   document.getElementById('prevElec').value = 0;
-  document.getElementById('currElec').value = b.electricUnit;
+  document.getElementById('currElec').value = b.electricUnit || 0;
 
   calculatePreview();
 
@@ -648,7 +764,26 @@ const billYear = document.getElementById('billYear').value;
     billDetailsModal?.classList.remove('flex');
   });
 
+async function uploadPayment() {
 
+  const fileInput = document.getElementById("paymentSlip");
+
+  const formData = new FormData();
+
+  formData.append("payFile", fileInput.files[0]);
+  formData.append("payAmount", 5000);
+  formData.append("roomId", "A1");
+  formData.append("payType", "RENT");
+
+  const res = await fetch("http://localhost:3000/api/payments", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+
+  console.log(data);
+}
 async function loadPayments() {
   try {
 
@@ -711,12 +846,15 @@ console.log("payments data:", payments);
       </div>
 
       <div>
-        ${p.PAYFILES
-          ? `<button data-slip="${p.PAYFILES}"
-              class="view-payment-slip px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 rounded text-sm">
-              ดูสลิป
-            </button>`
-          : ''}
+        ${
+  p.PAYFILES
+    ? `<button 
+         onclick="showSlipModal('${p.PAYFILES}', 'ตรวจสอบสลิปการชำระเงิน')"
+         class="mt-2 px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+         ดูสลิป
+       </button>`
+    : `<span class="text-gray-400 text-sm">ไม่มีสลิป</span>`
+}
       </div>
     `;
 

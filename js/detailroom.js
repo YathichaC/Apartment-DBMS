@@ -2,24 +2,41 @@
 const roomsData = {
   'A1': { name: 'ห้อง A1', price: 3000, deposit: 5500, signingDay: 3000, status: 'available', image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800' },
   'A2': { name: 'ห้อง A2', price: 3000, deposit: 5500, signingDay: 3000, status: 'available', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800' },
-  'A3': { name: 'ห้อง A3', price: 3000, deposit: 5500, signingDay: 3000, status: 'full', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800' },
+  'A3': { name: 'ห้อง A3', price: 3000, deposit: 5500, signingDay: 3000, status: 'available', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800' },
   'A4': { name: 'ห้อง A4', price: 3000, deposit: 5500, signingDay: 3000, status: 'available', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800' },
-  'A5': { name: 'ห้อง A5', price: 3200, deposit: 5500, signingDay: 3200, status: 'available', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800' },
+  'A5': { name: 'ห้อง A5', price: 3200, deposit: 5700, signingDay: 3200, status: 'available', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800' },
   'B1': { name: 'ห้อง B1', price: 3000, deposit: 5500, signingDay: 3000, status: 'available', image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800' },
-  'B2': { name: 'ห้อง B2', price: 3000, deposit: 5500, signingDay: 3000, status: 'full', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800' },
+  'B2': { name: 'ห้อง B2', price: 3000, deposit: 5500, signingDay: 3000, status: 'available', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800' },
   'B3': { name: 'ห้อง B3', price: 3000, deposit: 5500, signingDay: 3000, status: 'available', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800' },
   'B4': { name: 'ห้อง B4', price: 3000, deposit: 5500, signingDay: 3000, status: 'available', image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800' },
-  'B5': { name: 'ห้อง B5', price: 3200, deposit: 5500, signingDay: 3200, status: 'available', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800' }
+  'B5': { name: 'ห้อง B5', price: 3200, deposit: 5700, signingDay: 3200, status: 'available', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800' }
 };
 
 let currentImageIndex = 0;
 
-const images = [
-  'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
-  'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
-  'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800',
-  'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800'
-];
+let images = [];
+
+function setupRoomImages(roomId) {
+  const smallRooms = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4'];
+  const bedroomRooms = ['A5', 'B5'];
+
+  if (smallRooms.includes(roomId)) {
+    images = ['asset/img/small.jpg', 'asset/img/bathroom.jpg', 'asset/img/balcony.jpg'];
+  } else if (bedroomRooms.includes(roomId)) {
+    images = ['asset/img/bedroom.jpg', 'asset/img/living_room.jpg', 'asset/img/bathroom.jpg', 'asset/img/balcony.jpg'];
+  } else {
+    images = ['asset/img/small.jpg'];
+  }
+
+  const thumbContainer = document.getElementById('thumbnailContainer');
+  if (thumbContainer) {
+    thumbContainer.innerHTML = '';
+    images.forEach((img, index) => {
+      thumbContainer.innerHTML += `<img src="${img}" alt="Thumb ${index + 1}" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80" onclick="setImage(${index})">`;
+    });
+  }
+  updateImage();
+}
 
 function getQueryParameter(param) {
   const urlParams = new URLSearchParams(window.location.search);
@@ -30,6 +47,33 @@ async function loadRoomData() {
 
   if (!roomId) {
     document.body.innerHTML = "<h1 class='text-3xl font-bold text-red-600 text-center mt-10'>ไม่พบ Room ID</h1>";
+    return;
+  }
+
+  // กำหนดรูปภาพของห้อง
+  setupRoomImages(roomId);
+
+  let room = roomsData[roomId];
+  if (!room) {
+    // ลองดึงจาก API
+    try {
+      const resp = await fetch(`http://localhost:3000/api/rooms/${roomId}`);
+      if (resp.ok) {
+        const dbRoom = await resp.json();
+        room = {
+          name: `ห้อง ${dbRoom.ROOMID}`,
+          price: dbRoom.RPRICE,
+          deposit: 5500,
+          signingDay: dbRoom.RPRICE,
+          status: dbRoom.RSTATUS === 'AVAILABLE' ? 'available' : 'full',
+          image: dbRoom.IMAGE_URL || images[0]
+        };
+      }
+    } catch (e) { }
+  }
+
+  if (!room) {
+    document.body.innerHTML = "<h1 class='text-3xl font-bold text-red-600 text-center mt-10'>ไม่พบข้อมูลห้อง</h1>";
     return;
   }
 

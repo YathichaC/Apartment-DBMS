@@ -179,20 +179,18 @@
     </main>
   </div>
 
-  <!-- Slip modal -->
-  <div id="slipModal" class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center">
-    <div class="bg-white p-4 rounded shadow max-w-2xl w-full mx-4">
-      <div class="flex justify-end">
-        <button id="closeSlip" class="px-3 py-1 text-sm text-gray-600 hover:text-gray-900">ปิด</button>
-      </div>
-      <div class="mt-2">
-        <iframe 
-  id="slipFrame" 
-  class="w-full h-[80vh] rounded bg-white">
-</iframe>
-      </div>
+  <!-- Modal สำหรับดูสลิป / ไฟล์ภาพ (ใช้ร่วมกันทั้ง admin และ member) -->
+<div id="slipModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 items-center justify-center p-4 transition-opacity">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-auto relative">
+    <div class="sticky top-0 bg-white p-4 border-b flex justify-between items-center">
+      <h3 class="text-xl font-bold text-gray-800" id="slipModalTitle">สลิปการชำระเงิน</h3>
+      <button id="closeSlip" class="text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+    </div>
+    <div class="p-6 flex justify-center bg-gray-50">
+      <img id="slipImg" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow" alt="สลิป" loading="lazy">
     </div>
   </div>
+</div>
 
   <!-- User Form Modal -->
   <div id="userModal" class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center">
@@ -254,6 +252,28 @@
   </div>
 
   <!-- Bill Form Modal -->
+  <div id="bills" class="page-view hidden">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+    <h2 class="text-2xl font-semibold">บิล</h2>
+    <button id="showAddBillModal"
+      class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-medium transition-colors">
+      เพิ่มบิล
+    </button>
+  </div>
+
+  <!-- ฟิลเตอร์เดือน/ปี -->
+  <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+    <label class="text-sm font-medium text-gray-700 whitespace-nowrap">เลือกเดือน/ปี:</label>
+    <input type="month" id="filterBills"
+      class="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm w-full sm:w-auto" />
+  </div>
+
+  <!-- รายการบิล -->
+  <div id="billsList" class="space-y-4">
+    <!-- JS จะ render ข้อมูลบิลที่นี่ -->
+  </div>
+</div>
+  
   <div id="billModal" class="hidden fixed inset-0 bg-black/50 z-50 items-center justify-center">
     <div class="bg-white p-6 rounded-xl shadow-lg max-w-md w-full mx-4 max-h-screen overflow-y-auto">
       <h3 id="billModalTitle" class="text-xl font-bold mb-4">เพิ่มบิลใหม่</h3>
@@ -271,19 +291,19 @@
             <label class="block text-sm font-medium mb-1">เดือน</label>
             <select id="billMonth"
               class="w-full border rounded p-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500">
-              <option value="มกราคม">มกราคม</option>
-              <option value="กุมภาพันธ์">กุมภาพันธ์</option>
-              <option value="มีนาคม">มีนาคม</option>
-              <option value="เมษายน">เมษายน</option>
-              <option value="พฤษภาคม">พฤษภาคม</option>
-              <option value="มิถุนายน">มิถุนายน</option>
-              <option value="กรกฎาคม">กรกฎาคม</option>
-              <option value="สิงหาคม">สิงหาคม</option>
-              <option value="กันยายน">กันยายน</option>
-              <option value="ตุลาคม">ตุลาคม</option>
-              <option value="พฤศจิกายน">พฤศจิกายน</option>
-              <option value="ธันวาคม">ธันวาคม</option>
-            </select>
+              <option value="1">มกราคม</option>
+<option value="2">กุมภาพันธ์</option>
+<option value="3">มีนาคม</option>
+<option value="4">เมษายน</option>
+<option value="5">พฤษภาคม</option>
+<option value="6">มิถุนายน</option>
+<option value="7">กรกฎาคม</option>
+<option value="8">สิงหาคม</option>
+<option value="9">กันยายน</option>
+<option value="10">ตุลาคม</option>
+<option value="11">พฤศจิกายน</option>
+<option value="12">ธันวาคม</option>
+</select>
           </div>
           <div>
             <label class="block text-sm font-medium mb-1">ปี</label>

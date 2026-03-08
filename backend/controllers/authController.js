@@ -12,16 +12,15 @@ exports.login = async (req, res) => {
   }
 
   let conn;
-
   try {
     conn = await db.getConnection();
 
-    // 🔹 ตรวจสอบ ADMIN ก่อน
+    // ตรวจสอบ ADMIN ก่อน
     const adminResult = await conn.execute(
       `SELECT ADMINUSER
-       FROM ADMIN
-       WHERE ADMINUSER = :username
-       AND ADMINPASS = :password`,
+         FROM ADMIN
+        WHERE ADMINUSER = :username
+          AND ADMINPASS = :password`,
       { username, password },
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
@@ -34,25 +33,42 @@ exports.login = async (req, res) => {
       });
     }
 
-    // 🔹 ตรวจสอบ Tenant
+    // ตรวจสอบ Tenant  — เพิ่ม is_active = 1
     const tenantResult = await conn.execute(
       `SELECT AccID, RoomID, AccUser
-       FROM Account
-       WHERE AccUser = :username
-       AND AccPass = :password`,
+         FROM Account
+        WHERE AccUser   = :username
+          AND AccPass   = :password
+          AND is_active = 1`,
       { username, password },
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
     if (tenantResult.rows.length > 0) {
       const user = tenantResult.rows[0];
-
       return res.json({
         success: true,
         role: "tenant",
         username: user.ACCUSER,
-        roomId: user.ROOMID,
-        accId: user.ACCID
+        roomId:   user.ROOMID,
+        accId:    user.ACCID
+      });
+    }
+
+    // ตรวจว่า Account มีอยู่แต่ถูก deactivate หรือไม่ (เพื่อให้ Error message ชัดขึ้น)
+    const inactiveCheck = await conn.execute(
+      `SELECT COUNT(*) AS CNT
+         FROM Account
+        WHERE AccUser   = :username
+          AND AccPass   = :password
+          AND is_active = 0`,
+      { username, password }
+    );
+
+    if (inactiveCheck.rows[0].CNT > 0) {
+      return res.status(401).json({
+        success: false,
+        message: "บัญชีนี้ถูกปิดใช้งานแล้ว กรุณาติดต่อผู้ดูแลระบบ"
       });
     }
 
@@ -63,10 +79,7 @@ exports.login = async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({
-      success: false,
-      message: "เกิดข้อผิดพลาดในระบบ"
-    });
+    res.status(500).json({ success: false, message: "เกิดข้อผิดพลาดในระบบ" });
   } finally {
     if (conn) await conn.close();
   }

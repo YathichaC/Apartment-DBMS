@@ -49,5 +49,4 @@ router.get(
   contractController.downloadContract
 );
 
-
 module.exports = router;

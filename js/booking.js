@@ -64,7 +64,7 @@ formData.append("roomId", roomId);
 formData.append("fullName", fullName);
 formData.append("phone", phone);
 formData.append("email", email);
-formData.append("slip", slipFile);
+formData.append("payFile", slipFile);
 
 const res = await fetch(`${BOOKING_API}/create`, {
   method: "POST",
